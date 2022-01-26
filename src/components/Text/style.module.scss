@@ -1,0 +1,18 @@
+@import "src/assets/modules";
+
+
+.darkGray {
+  color: $medium-gray;
+}
+.danger {
+  color: $danger-color;
+}
+.label {
+  font-size: $f-size-label;
+}
+.pageTitle {
+  font-size: $f-size-page-title;
+}
+.bold {
+  font-weight: bold;
+}

@@ -1,0 +1,25 @@
+@import "size";
+
+$space-base: 4px;
+$space-xxs: 4px;
+$space-xs: 8px;
+$space-s: 12px;
+$space-sm: 16px;
+$space-md: 24px;
+$space-lg: 32px;
+$space-xl: 48px;
+$space-xxl: 64px;
+
+$spaces: $space-xxs, $space-xs, $space-sm, $space-md, $space-lg, $space-xl, $space-xxl;
+
+@each $rank in $size-ranks {
+  $idx: index($size-ranks, $rank);
+  $space: nth($spaces, $idx);
+
+  .#{$rank}MarginTop {
+    margin-top: $space;
+  }
+  .#{$rank}MarginBottom {
+    margin-bottom: $space;
+  }
+}

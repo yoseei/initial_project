@@ -1,0 +1,23 @@
+@import "src/assets/modules";
+
+.root {
+  position: relative;
+
+  input {
+    color: $medium-gray;
+    border: 1px solid $light-gray;
+    border-radius: $radius-sm;
+    padding: $space-s;
+    width: 100%;
+
+  }
+  span {
+    position: absolute;
+    right: $space-xxs;
+    //position: absoluteで上下中央揃えにしている
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+  }
+}
