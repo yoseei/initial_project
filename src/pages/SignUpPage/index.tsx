@@ -8,7 +8,7 @@ import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import Button from "components/Button";
 import Input from "components/Input";
-import Text from "components/Text";
+import { Label, PageTitle } from "components/Text";
 import { EyeOutlined } from "@ant-design/icons";
 import styles from "./style.module.scss";
 import classNames from "classnames";
@@ -45,20 +45,16 @@ const SignUpPage: VFC = () => {
 
   return (
     <div className={classNames(styles.root, styles.rightInTheMiddle)}>
-      <Text
-        bold
-        fontSize="32px"
-        text="新規登録"
-        className={classNames(styles.lgMarginBottom, styles.textCenter)}
-      />
+      <PageTitle bold className={classNames(styles.lgMarginBottom, styles.textCenter)}>
+        新規登録
+      </PageTitle>
       <form onSubmit={onSubmit}>
         <div className={styles.xxlMarginBottom}>
-          <Text
-            color="darkGray"
-            text="メールアドレス"
-            fontSize="12px"
-            className={styles.xsMarginBottom}
-          />
+          <div className={styles.xsMarginBottom}>
+            <Label color="darkGray" className={styles.xsMarginBottom}>
+              メールアドレス
+            </Label>
+          </div>
           <Input
             {...register("email", {
               required: "メールアドレスは必須です",
@@ -73,17 +69,13 @@ const SignUpPage: VFC = () => {
           <ErrorMessage
             errors={errors}
             name="email"
-            render={({ message }) => <Text text={message} color="danger" fontSize="12px" />}
+            render={({ message }) => <Label color="danger">{message}</Label>}
           />
         </div>
-
         <div className={styles.lgMarginBottom}>
-          <Text
-            color="darkGray"
-            text="パスワード"
-            fontSize="12px"
-            className={styles.xsMarginBottom}
-          />
+          <div className={styles.xsMarginBottom}>
+            <Label color="darkGray">パスワード</Label>
+          </div>
           <Input
             {...register("password", {
               required: "パスワードは必須です",
@@ -98,10 +90,10 @@ const SignUpPage: VFC = () => {
           <ErrorMessage
             errors={errors}
             name="password"
-            render={({ message }) => <Text text={message} color="danger" fontSize="12px" />}
+            render={({ message }) => <Label color="danger">{message}</Label>}
           />
         </div>
-        <Button type="submit" backGround="primary" color="white" className={styles.lgMarginBottom}>
+        <Button type="submit" color="primary" className={styles.lgMarginBottom}>
           新規登録
         </Button>
         <Button type="button" color="darkGray" className={styles.lgMarginBottom}>

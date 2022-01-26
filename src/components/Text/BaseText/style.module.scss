@@ -1,0 +1,16 @@
+@import "src/assets/modules";
+
+.base {
+  color: $black;
+  font-size: $f-size-body-text;
+
+  &[data-bold="true"] {
+    font-weight: bold;
+  }
+  &[data-color="darkGray"] {
+    color: $dark-gray;
+  }
+  &[data-color="danger"] {
+    color: $danger-color;
+  }
+}

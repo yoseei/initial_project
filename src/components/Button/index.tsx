@@ -4,12 +4,11 @@ import styles from "./style.module.scss";
 
 type ButtonProps = {
   type: "button" | "submit";
-  backGround?: "primary";
+  color?: "primary" | "darkGray";
   children: string;
-  color: "white" | "darkGray";
   className?: string;
 };
-const Button: FC<ButtonProps> = ({ type, backGround, color, children, className }) => {
+const Button: FC<ButtonProps> = ({ type, color, children, className }) => {
   return (
     <>
       <button
@@ -17,9 +16,8 @@ const Button: FC<ButtonProps> = ({ type, backGround, color, children, className 
         className={classNames(
           styles.root,
           className,
-          { [styles.primary]: backGround === "primary" },
-          { [styles.darkGray]: color === "darkGray" },
-          { [styles.white]: color === "white" }
+          { [styles.primary]: color === "primary" },
+          { [styles.darkGray]: color === "darkGray" }
         )}
       >
         {children}
