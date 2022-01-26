@@ -1,0 +1,20 @@
+@import "src/assets/modules";
+
+.root {
+  width: 100%;
+  text-align: center;
+  border-radius: $radius-xs;
+  padding: $space-s 0;
+}
+
+//----Props Css-----//
+.primary {
+  background: $primary-color;
+}
+.darkGray {
+  color: $dark-gray;
+  border: 1px solid $dark-gray;
+}
+.white {
+  color: $white;
+}
