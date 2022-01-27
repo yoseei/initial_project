@@ -13,7 +13,7 @@ type CurrentAccountContext = {
 
 export const currentAccountContext = createContext<CurrentAccountContext>({
   account: undefined,
-  isLoggedIn: false,
+  isLoggedIn: !!localStorage.getItem(PersistenceKeys.TOKEN),
   setAccount: () => undefined,
   setIsLoggedIn: () => undefined,
 });
@@ -41,7 +41,6 @@ const CurrentAccountProvider: FC = ({ children }) => {
       });
     })();
   }, []);
-
   return (
     <currentAccountContext.Provider value={{ account, isLoggedIn, setAccount, setIsLoggedIn }}>
       {children}
