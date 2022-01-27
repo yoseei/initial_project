@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import styles from "./style.module.scss";
-import { ContentTitle } from "components/Text";
+import styles from "components/molecules/Sidebar/style.module.scss";
+import { ContentTitle } from "components/atoms/Text";
 import classNames from "classnames";
 
 type SidebarProps = {

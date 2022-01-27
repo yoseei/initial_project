@@ -6,13 +6,13 @@ import { APIHost } from "constants/APIHost";
 import { Account } from "data/account";
 import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
-import Button from "components/Button";
-import Input from "components/Input";
-import { Label, PageTitle } from "components/Text";
+import Button from "components/atoms/Button";
+import Input from "components/atoms/Input";
+import { Label, PageTitle } from "components/atoms/Text";
 import { EyeOutlined } from "@ant-design/icons";
 import styles from "./style.module.scss";
 import classNames from "classnames";
-import Sidebar from "components/Sidebar";
+import Sidebar from "components/molecules/Sidebar";
 
 type SignUpFormData = {
   email: string;

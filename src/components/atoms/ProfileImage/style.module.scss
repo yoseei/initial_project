@@ -1,0 +1,10 @@
+@import "src/assets/modules";
+
+.root {
+  .image {
+    background-image: url("./checker.png");
+    background-size: contain;
+    width: $image-md;
+    height: $image-md;
+  }
+}

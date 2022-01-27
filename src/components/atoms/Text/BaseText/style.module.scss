@@ -10,6 +10,9 @@
   &[data-block="true"] {
     display: block;
   }
+  &[data-color="black"] {
+    color: $black;
+  }
   &[data-color="darkGray"] {
     color: $dark-gray;
   }
