@@ -9,6 +9,7 @@ export type BaseTextProps = {
   size?: number;
   htmlNode?: string;
   bold?: boolean;
+  block?: boolean;
   className?: string;
 };
 const BaseText: FC<BaseTextProps> = ({
@@ -16,6 +17,7 @@ const BaseText: FC<BaseTextProps> = ({
   htmlNode = "div",
   children,
   bold,
+  block,
   color,
   className,
 }) => {
@@ -26,6 +28,7 @@ const BaseText: FC<BaseTextProps> = ({
       style={{ fontSize: size }}
       className={classNames(styles.base, className)}
       data-bold={bold}
+      data-block={block}
       data-color={color}
     >
       {children}

@@ -1,5 +1,15 @@
 @import 'src/assets/modules';
 
+
 .root {
-  width: 50%;
+  height: 100vh;
+  padding: 0 $space-md;
+  .signupContainer {
+    width: 100%;
+
+    .formContainer {
+      flex: 1;
+      padding: 0 20%;
+    }
+  }
 }

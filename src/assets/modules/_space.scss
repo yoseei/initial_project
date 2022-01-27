@@ -16,6 +16,9 @@ $spaces: $space-xxs, $space-xs, $space-sm, $space-md, $space-lg, $space-xl, $spa
   $idx: index($size-ranks, $rank);
   $space: nth($spaces, $idx);
 
+  .#{$rank}Padding {
+    padding: $space;
+  }
   .#{$rank}MarginTop {
     margin-top: $space;
   }
