@@ -1,10 +1,9 @@
 @import "src/assets/modules";
 
-.root {
-  .sidebarContainer {
-    padding: $sidebar-top $space-md;
-  }
-  .profileContainer {
-    padding: $space-md $space-lg;
-  }
+.sidebarContainer {
+  padding: $sidebar-top $space-md;
+}
+
+.profileContainer {
+  padding: $space-md $space-lg;
 }

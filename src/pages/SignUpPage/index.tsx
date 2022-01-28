@@ -13,6 +13,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import styles from "./style.module.scss";
 import classNames from "classnames";
 import Sidebar from "components/molecules/Sidebar";
+import FlexBox from "components/atoms/FlexBox";
 
 type SignUpFormData = {
   email: string;
@@ -45,12 +46,12 @@ const SignUpPage: VFC = () => {
   });
 
   return (
-    <div className={classNames(styles.root, styles.alignItemsCenter)}>
-      <div className={classNames(styles.signupContainer, styles.row)}>
+    <FlexBox className={styles.root} align="middle">
+      <FlexBox className={styles.signUpContainer}>
         <div className={styles.sidebar}>
           <Sidebar />
         </div>
-        <div className={styles.formContainer}>
+        <div className={styles.formContainer} style={{ flex: "1" }}>
           <PageTitle bold className={classNames(styles.lgMarginBottom, styles.textCenter)}>
             新規登録
           </PageTitle>
@@ -99,16 +100,24 @@ const SignUpPage: VFC = () => {
                 render={({ message }) => <Label color="danger">{message}</Label>}
               />
             </div>
-            <Button type="submit" color="primary" className={styles.lgMarginBottom}>
+            <Button
+              type="submit"
+              color="primary"
+              className={classNames(styles.lgMarginBottom, styles.sPadding)}
+            >
               新規登録
             </Button>
-            <Button type="button" color="darkGray" className={styles.lgMarginBottom}>
+            <Button
+              type="button"
+              color="darkGray"
+              className={classNames(styles.lgMarginBottom, styles.sPadding)}
+            >
               ログインはこちら
             </Button>
           </form>
         </div>
-      </div>
-    </div>
+      </FlexBox>
+    </FlexBox>
   );
 };
 

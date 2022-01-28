@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import styles from "./style.module.scss";
-import HistoryRow from "components/molecules/HistoryRow";
+import styles from "pages/MyPage/History/style.module.scss";
+import HistoryRow from "pages/MyPage/History/HistoryRow";
 import Button from "components/atoms/Button";
 import { SectionTitle } from "components/atoms/Text";
 

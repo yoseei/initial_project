@@ -1,24 +1,32 @@
 import { VFC } from "react";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import styles from "./style.module.scss";
-import MyPageTop from "components/organisms/MyPageTop";
-import History from "components/organisms/History";
+import MyPageTop from "pages/MyPage/History/MyPageTop";
+import History from "pages/MyPage/History";
 import Sidebar from "components/molecules/Sidebar";
 import classNames from "classnames";
+import FlexBox from "components/atoms/FlexBox";
 
 const MyPage: VFC = () => {
   const { signOut } = useCurrentAccount();
   return (
-    <div className={classNames(styles.root, styles.row)}>
+    <FlexBox>
       <div className={styles.sidebarContainer}>
         <Sidebar />
       </div>
-      <div className={classNames(styles.flex1, styles.profileContainer)}>
+      <FlexBox
+        className={classNames(styles.profileContainer)}
+        direction="column"
+        style={{ flex: "1" }}
+      >
         <MyPageTop />
-        <History historyType="職歴" className={styles.lgMarginBottom} />
+        <History
+          historyType="職歴"
+          className={classNames(styles.mdMarginTop, styles.lgMarginBottom)}
+        />
         <History historyType="学歴" />
-      </div>
-    </div>
+      </FlexBox>
+    </FlexBox>
   );
 };
 

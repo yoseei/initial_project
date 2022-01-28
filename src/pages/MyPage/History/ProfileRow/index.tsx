@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { BodyText } from "components/atoms/Text";
-import styles from "./style.module.scss";
-import classNames from "classnames";
+import styles from "pages/MyPage/History/ProfileRow/style.module.scss";
+import FlexBox from "components/atoms/FlexBox";
 
 type ProfileRowProps = {
   title: string;
@@ -10,12 +10,12 @@ type ProfileRowProps = {
 };
 const ProfileRow: FC<ProfileRowProps> = ({ title, content, className }) => {
   return (
-    <div className={classNames(styles.row, className)}>
+    <FlexBox className={className}>
       <BodyText color="darkGray" className={styles.mdMarginRight}>
         {title}
       </BodyText>
       <BodyText>{content}</BodyText>
-    </div>
+    </FlexBox>
   );
 };
 

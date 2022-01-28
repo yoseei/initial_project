@@ -1,0 +1,65 @@
+@import "src/assets/modules";
+
+.flexBox {
+  display: flex;
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+
+  &[data-justify="start"] {
+    justify-content: start;
+  }
+
+  &[data-justify="end"] {
+    justify-content: flex-end;
+  }
+
+  &[data-justify="center"] {
+    justify-content: center;
+  }
+
+  &[data-justify="space-around"] {
+    justify-content: space-around;
+  }
+
+  &[data-justify="space-between"] {
+    justify-content: space-between;
+  }
+
+  &[data-align="top"] {
+    align-items: start;
+  }
+
+  &[data-align="middle"] {
+    align-items: center;
+  }
+
+  &[data-align="end"] {
+    align-items: end;
+  }
+
+  &[data-gap="xs"] {
+    gap: $space-xs;
+  }
+  &[data-gap="sm"] {
+    gap: $space-sm;
+  }
+  &[data-gap="md"] {
+    gap: $space-md;
+  }
+  &[data-gap="lg"] {
+    gap: $space-lg;
+  }
+  &[data-gap="xl"] {
+    gap: $space-xl;
+  }
+
+  &[data-direction="row"] {
+    flex-direction: row;
+  }
+
+  &[data-direction="column"] {
+    flex-direction: column;
+  }
+}

@@ -10,7 +10,7 @@ $space-lg: 32px;
 $space-xl: 48px;
 $space-xxl: 64px;
 
-$spaces: $space-xxs, $space-xs, $space-sm, $space-md, $space-lg, $space-xl, $space-xxl;
+$spaces: $space-xxs, $space-xs,  $space-s, $space-sm, $space-md, $space-lg, $space-xl, $space-xxl;
 
 @each $rank in $size-ranks {
   $idx: index($size-ranks, $rank);
