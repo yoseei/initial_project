@@ -19,16 +19,30 @@ $spaces: $space-xxs, $space-xs, $space-sm, $space-md, $space-lg, $space-xl, $spa
   .#{$rank}Padding {
     padding: $space;
   }
+
+  .#{$rank}PaddingTop {
+    padding-top: $space;
+  }
+
+  .#{$rank}PaddingBottom {
+    padding-bottom: $space;
+  }
+
   .#{$rank}MarginTop {
     margin-top: $space;
   }
+
   .#{$rank}MarginBottom {
     margin-bottom: $space;
   }
+
   .#{$rank}MarginRight {
     margin-right: $space;
   }
+
   .#{$rank}MarginLeft {
     margin-left: $space;
   }
 }
+
+$sidebar-top: 150px;

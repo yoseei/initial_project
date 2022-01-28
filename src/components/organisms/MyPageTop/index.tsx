@@ -24,7 +24,7 @@ const MyPageTop = () => {
         <Button type="button" color="danger" className={styles.xsMarginRight} size="small">
           ログアウト
         </Button>
-        <Button type="button" color="darkGray" size="small">
+        <Button type="button" color="lightGray" size="small">
           プロフィールを編集
         </Button>
       </div>

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import styles from "components/atoms/Text/BaseText/style.module.scss";
 import classNames from "classnames";
 
-export type TextColor = "darkGray" | "danger";
+export type TextColor = "darkGray" | "mediumGray" | "danger";
 
 export type BaseTextProps = {
   color?: TextColor;

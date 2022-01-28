@@ -15,6 +15,11 @@ export const Label: FC<BaseTextProps> = (props) => {
   return <BaseText size={12} bold htmlNode={"span"} {...props} />;
 };
 
+// normal font
+export const BodyTextLarge: FC<BaseTextProps> = (props) => {
+  return <BaseText size={16} htmlNode={"p"} {...props} />;
+};
+
 export const BodyText: FC<BaseTextProps> = (props) => {
   return <BaseText size={14} htmlNode={"p"} {...props} />;
 };

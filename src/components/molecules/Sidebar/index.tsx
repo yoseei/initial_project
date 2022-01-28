@@ -1,18 +1,29 @@
 import React, { FC } from "react";
 import styles from "components/molecules/Sidebar/style.module.scss";
-import { ContentTitle } from "components/atoms/Text";
+import { BodyTextSmall } from "components/atoms/Text";
 import classNames from "classnames";
+import { useCurrentAccount } from "hooks/useCurrentAccount";
 
 type SidebarProps = {
   className?: string;
 };
 const Sidebar: FC<SidebarProps> = ({ className }) => {
+  const { isLoggedIn } = useCurrentAccount();
   return (
     <div className={classNames(styles.root, styles.lgPadding, className)}>
-      <ContentTitle color="darkGray" className={styles.mdMarginBottom}>
+      <BodyTextSmall color="darkGray" className={styles.mdMarginBottom}>
         募集一覧
-      </ContentTitle>
-      <ContentTitle color="darkGray">ログイン</ContentTitle>
+      </BodyTextSmall>
+      {isLoggedIn ? (
+        <>
+          <BodyTextSmall color="darkGray" className={styles.mdMarginBottom}>
+            マイページ
+          </BodyTextSmall>
+          <BodyTextSmall color="darkGray">企業ページへ</BodyTextSmall>
+        </>
+      ) : (
+        <BodyTextSmall color="darkGray">ログイン</BodyTextSmall>
+      )}
     </div>
   );
 };
