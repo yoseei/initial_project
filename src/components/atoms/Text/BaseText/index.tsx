@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import styles from "./style.module.scss";
+import styles from "components/atoms/Text/BaseText/style.module.scss";
 import classNames from "classnames";
 
-export type TextColor = "darkGray" | "danger";
+export type TextColor = "darkGray" | "mediumGray" | "danger";
 
 export type BaseTextProps = {
   color?: TextColor;
@@ -18,7 +18,7 @@ const BaseText: FC<BaseTextProps> = ({
   children,
   bold,
   block,
-  color,
+  color = "black",
   className,
 }) => {
   const Component = htmlNode as React.ElementType;

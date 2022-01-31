@@ -10,8 +10,14 @@
   &[data-block="true"] {
     display: block;
   }
+  &[data-color="black"] {
+    color: $black;
+  }
   &[data-color="darkGray"] {
     color: $dark-gray;
+  }
+  &[data-color="mediumGray"] {
+    color: $medium-gray;
   }
   &[data-color="danger"] {
     color: $danger-color;
