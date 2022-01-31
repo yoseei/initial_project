@@ -11,11 +11,12 @@ type ButtonProps = {
 };
 const Button: FC<ButtonProps> = ({ type, color, children, className, size }) => {
   return (
-    <div className={className}>
+    <div>
       <button
         type={type}
         className={classNames(
           styles.root,
+          className,
           { [styles.primary]: color === "primary" },
           { [styles.darkGray]: color === "darkGray" },
           { [styles.lightGray]: color === "lightGray" },

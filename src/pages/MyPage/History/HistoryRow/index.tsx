@@ -1,14 +1,15 @@
 import React from "react";
-import styles from "./style.module.scss";
+import styles from "pages/MyPage/History/HistoryRow/style.module.scss";
 import Button from "components/atoms/Button";
 import { BodyText, BodyTextLarge, BodyTextSmall } from "components/atoms/Text";
 import classNames from "classnames";
+import FlexBox from "components/atoms/FlexBox";
 
 const HistoryRow = () => {
   return (
     <div className={styles.root}>
       <div className={styles.spaceBetween}>
-        <div className={styles.row}>
+        <FlexBox>
           <div className={classNames(styles.alignItemsCenter)}>
             <BodyTextSmall color="darkGray" className={styles.smMarginRight}>
               2020-01 - 現在
@@ -20,7 +21,7 @@ const HistoryRow = () => {
             </BodyTextLarge>
             <BodyText color="darkGray">エンジニア</BodyText>
           </div>
-        </div>
+        </FlexBox>
         <div className={styles.alignItemsCenter}>
           <Button size="small" color="lightGray" type="button">
             編集する
