@@ -1,10 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./style.module.scss";
+import classNames from "classnames";
+import UploadIcon from "components/atoms/ProfileImage/UploadIcon";
 
-const ProfileImage = () => {
+type ProfileImageProps = {
+  className?: string;
+};
+const ProfileImage: FC<ProfileImageProps> = ({ className }) => {
   return (
-    <div className={styles.root}>
+    <div className={classNames(styles.root, className)}>
       <div className={styles.image} />
+      <UploadIcon />
     </div>
   );
 };

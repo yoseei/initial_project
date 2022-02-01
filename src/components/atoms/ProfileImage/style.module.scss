@@ -1,6 +1,13 @@
 @import "src/assets/modules";
 
 .root {
+  .uploadIcon {
+    background-image: url("../../../components/atoms/Images/Vector.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: $uploadIcon_size;
+    height: $uploadIcon_size;
+  }
   .image {
     background-image: url("./checker.png");
     background-size: contain;

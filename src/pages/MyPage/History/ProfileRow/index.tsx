@@ -5,7 +5,7 @@ import FlexBox from "components/atoms/FlexBox";
 
 type ProfileRowProps = {
   title: string;
-  content: string;
+  content?: string;
   className?: string;
 };
 const ProfileRow: FC<ProfileRowProps> = ({ title, content, className }) => {

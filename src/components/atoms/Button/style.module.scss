@@ -27,6 +27,12 @@
   border: 1px solid $danger-color;
 }
 
+.black {
+  color: $black;
+  background: $light-gray;
+
+}
+
 .small {
   font-size: $f-size-label;
 }

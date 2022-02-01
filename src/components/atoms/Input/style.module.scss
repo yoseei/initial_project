@@ -1,16 +1,24 @@
-@import "../../../assets/modules";
+@import "src/assets/modules";
 
 .root {
   position: relative;
+  width: 100%;
 
   input {
-    color: $medium-gray;
+    color: $black;
     border: 1px solid $light-gray;
     border-radius: $radius-sm;
     padding: $space-s;
     width: 100%;
 
+    ::placeholder {
+      color: $medium-gray;
+    }
+    &[type="date"] {
+      color: $medium-gray;
+    }
   }
+
   span {
     position: absolute;
     right: $space-xxs;

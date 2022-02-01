@@ -57,11 +57,6 @@ const SignInPage: VFC = () => {
           </PageTitle>
           <form onSubmit={onSubmit}>
             <div className={styles.xxlMarginBottom}>
-              <div className={styles.xsMarginBottom}>
-                <Label color="darkGray" className={styles.xsMarginBottom}>
-                  メールアドレス
-                </Label>
-              </div>
               <Input
                 {...register("email", {
                   required: "メールアドレスは必須です",
@@ -71,7 +66,7 @@ const SignInPage: VFC = () => {
                   },
                 })}
                 placeholder={"test@test.com"}
-                icon={""}
+                text="メールアドレス"
               />
               <ErrorMessage
                 errors={errors}
@@ -80,9 +75,6 @@ const SignInPage: VFC = () => {
               />
             </div>
             <div className={styles.lgMarginBottom}>
-              <div className={styles.xsMarginBottom}>
-                <Label color="darkGray">パスワード</Label>
-              </div>
               <Input
                 {...register("password", {
                   required: "パスワードは必須です",
@@ -93,6 +85,7 @@ const SignInPage: VFC = () => {
                   },
                 })}
                 icon={<EyeOutlined />}
+                text="パスワード"
               />
               <ErrorMessage
                 errors={errors}
