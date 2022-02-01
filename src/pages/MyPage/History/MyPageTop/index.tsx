@@ -17,30 +17,40 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData }) => {
   const openModal = () => {
     setIsModal(!isModal);
   };
+
+  const loading = () => {
+    if (!profileData) return <div>Loading...</div>;
+  };
+
   return (
     <div className={classNames(styles.root, styles.spaceBetween)}>
-      <FlexBox>
-        <ProfileImage />
-        <div className={styles.smMarginLeft}>
-          <BodyTextSmall className={styles.xsMarginBottom}>かな</BodyTextSmall>
-          <SectionTitle className={styles.xsMarginBottom}>
-            {profileData?.lastName}
-            {profileData?.firstName}
-          </SectionTitle>
-          <ProfileRow
-            className={styles.xsMarginBottom}
-            title="性別"
-            content={profileData?.gender}
-          />
-          <ProfileRow
-            className={styles.xsMarginBottom}
-            title="住まい"
-            content={profileData?.address}
-          />
-          <ProfileRow className={styles.xsMarginBottom} title="最終学歴" content="" />
-          <ProfileRow title="誕生日" content="" />
-        </div>
-      </FlexBox>
+      {profileData ? (
+        <FlexBox>
+          <ProfileImage />
+          <div className={styles.smMarginLeft}>
+            <BodyTextSmall className={styles.xsMarginBottom}>かな</BodyTextSmall>
+            <SectionTitle className={styles.xsMarginBottom}>
+              {profileData.lastName}
+              {profileData.firstName}
+            </SectionTitle>
+            <ProfileRow
+              className={styles.xsMarginBottom}
+              title="性別"
+              content={profileData.gender}
+            />
+            <ProfileRow
+              className={styles.xsMarginBottom}
+              title="住まい"
+              content={profileData.address}
+            />
+            <ProfileRow className={styles.xsMarginBottom} title="最終学歴" content="" />
+            <ProfileRow title="誕生日" content="" />
+          </div>
+        </FlexBox>
+      ) : (
+        loading()
+      )}
+
       <FlexBox gap="xs">
         <Button type="button" color="danger" className={styles.xsMarginRight} size="small">
           ログアウト
