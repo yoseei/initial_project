@@ -2,7 +2,7 @@ import { useCallback, useContext } from "react";
 import { currentAccountContext } from "hooks/useCurrentAccount/currentAccountContext";
 import { HttpClient } from "lib/axios";
 import { Account } from "data/account";
-import { APIHost } from "constants/APIHost";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 import { useNavigate } from "react-router-dom";
 import { routes } from "constants/routes";
 
@@ -25,7 +25,7 @@ export const useCurrentAccount = (): CurrentAccountUseCase => {
 
       await HttpClient.request<Account>({
         method: "GET",
-        url: `${APIHost.APP}/accounts/${accountId}`,
+        url: `${APIBaseUrl.APP}/accounts/${accountId}`,
       }).then((res) => {
         setAccount(res.data);
         setIsLoggedIn(true);

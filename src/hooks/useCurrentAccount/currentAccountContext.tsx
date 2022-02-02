@@ -1,7 +1,7 @@
 import { createContext, FC, useEffect, useState } from "react";
 import { Account } from "data/account";
 import { HttpClient } from "lib/axios";
-import { APIHost } from "constants/APIHost";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 import PersistenceKeys from "constants/persistenceKeys";
 
 type CurrentAccountContext = {
@@ -35,7 +35,7 @@ const CurrentAccountProvider: FC = ({ children }) => {
 
       await HttpClient.request<Account>({
         method: "GET",
-        url: `${APIHost.APP}/accounts/${accountId}`,
+        url: `${APIBaseUrl.APP}/accounts/${accountId}`,
       }).then((res) => {
         setAccount(res.data);
       });

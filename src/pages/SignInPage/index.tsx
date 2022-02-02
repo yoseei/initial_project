@@ -2,7 +2,7 @@ import { VFC } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { HttpClient } from "lib/axios";
-import { APIHost } from "constants/APIHost";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
@@ -37,14 +37,15 @@ const SignInPage: VFC = () => {
   const onSubmit = handleSubmit(async (prams) => {
     const res = await HttpClient.request<SignInResponse>({
       method: "POST",
-      url: `${APIHost.AUTH}/sign_in`,
+      url: `${APIBaseUrl.AUTH}/sign_in`,
     });
     if (!res.data.token) return;
-
+    console.log(res.data.token);
     localStorage.setItem(PersistenceKeys.TOKEN, res.data.token);
     await refetchAccount();
   });
 
+  console.log(process.env.REACT_APP_AUTH_API_HOST);
   return (
     <FlexBox className={styles.root} align="middle">
       <FlexBox className={styles.signInContainer}>
@@ -78,11 +79,11 @@ const SignInPage: VFC = () => {
               <Input
                 {...register("password", {
                   required: "パスワードは必須です",
-                  pattern: {
-                    value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
-                    message:
-                      "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
-                  },
+                  // pattern: {
+                  //   value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
+                  //   message:
+                  //     "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
+                  // },
                 })}
                 icon={<EyeOutlined />}
                 text="パスワード"

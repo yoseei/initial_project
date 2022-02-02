@@ -2,7 +2,7 @@ import { VFC } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { HttpClient } from "lib/axios";
-import { APIHost } from "constants/APIHost";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
@@ -16,8 +16,10 @@ import Sidebar from "components/molecules/Sidebar";
 import FlexBox from "components/atoms/FlexBox";
 
 type SignUpFormData = {
-  email: string;
-  password: string;
+  account: {
+    email: string;
+    password: string;
+  };
 };
 
 type SignUpResponse = {
@@ -34,10 +36,11 @@ const SignUpPage: VFC = () => {
 
   const { refetchAccount } = useCurrentAccount();
 
-  const onSubmit = handleSubmit(async (prams) => {
+  const onSubmit = handleSubmit(async (params) => {
     const res = await HttpClient.request<SignUpResponse>({
       method: "POST",
-      url: `${APIHost.AUTH}/sign_in`,
+      url: `${APIBaseUrl.AUTH}/sign_up`,
+      data: params,
     });
     if (!res.data.token) return;
 
@@ -58,7 +61,7 @@ const SignUpPage: VFC = () => {
           <form onSubmit={onSubmit}>
             <div className={styles.xxlMarginBottom}>
               <Input
-                {...register("email", {
+                {...register("account.email", {
                   required: "メールアドレスは必須です",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
@@ -77,13 +80,13 @@ const SignUpPage: VFC = () => {
             </div>
             <div className={styles.lgMarginBottom}>
               <Input
-                {...register("password", {
+                {...register("account.password", {
                   required: "パスワードは必須です",
-                  pattern: {
-                    value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
-                    message:
-                      "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
-                  },
+                  // pattern: {
+                  //   value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
+                  //   message:
+                  //     "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
+                  // },
                 })}
                 icon={<EyeOutlined />}
                 text="パスワード"
