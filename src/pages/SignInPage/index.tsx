@@ -34,18 +34,23 @@ const SignInPage: VFC = () => {
 
   const { refetchAccount } = useCurrentAccount();
 
-  const onSubmit = handleSubmit(async (prams) => {
-    const res = await HttpClient.request<SignInResponse>({
-      method: "POST",
-      url: `${APIBaseUrl.AUTH}/sign_in`,
-    });
+  const onSubmit = handleSubmit(async (params) => {
+    const res = await HttpClient.post<SignInResponse>(
+      `${APIBaseUrl.AUTH}/sign_in`,
+      {
+        account: params,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     if (!res.data.token) return;
-    console.log(res.data.token);
     localStorage.setItem(PersistenceKeys.TOKEN, res.data.token);
     await refetchAccount();
   });
 
-  console.log(process.env.REACT_APP_AUTH_API_HOST);
   return (
     <FlexBox className={styles.root} align="middle">
       <FlexBox className={styles.signInContainer}>

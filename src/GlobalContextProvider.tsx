@@ -1,7 +1,8 @@
-import { FC, Fragment } from "react";
+import { FC } from "react";
+import CurrentAccountProvider from "hooks/useCurrentAccount/currentAccountContext";
 
 const GlobalContextProvider: FC = ({ children }) => {
-  return <Fragment>{children}</Fragment>;
+  return <CurrentAccountProvider>{children}</CurrentAccountProvider>;
 };
 
 export default GlobalContextProvider;

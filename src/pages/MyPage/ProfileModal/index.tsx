@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Button from "components/atoms/Button";
 import styles from "./style.module.scss";
 import { SectionTitle } from "components/atoms/Text";
@@ -10,6 +10,12 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ProfileFormData } from "pages/MyPage/index";
 import UploadIcon from "components/atoms/ProfileImage/UploadIcon";
 import { ErrorMessage } from "@hookform/error-message";
+import { CloudUploadOutlined, InboxOutlined } from "@ant-design/icons";
+import { Upload, message, Button as AntButton } from "antd";
+import { HttpClient } from "lib/axios";
+import { APIBaseUrl } from "constants/apiBaseUrl";
+import { Account } from "data/account";
+import { useCurrentAccount } from "hooks/useCurrentAccount";
 
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,15 +30,36 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
     reset,
     formState: { errors },
   } = useForm<ProfileFormData>();
+  const [image, setImage] = useState<File>();
+  const { account } = useCurrentAccount();
 
   const closeModal = () => {
     setIsModal(!isModal);
   };
-  //
-  const onSubmit: SubmitHandler<ProfileFormData> = (data) => {
+
+  const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
+    console.log(account);
+    if (!account?.id) return;
+
+    console.log(image);
     setProfileData(data);
     setIsModal(!isModal);
+    const fData = new FormData();
+    fData.append("account.avatar", image as Blob);
+    await HttpClient.request<Account>({
+      method: "PATCH",
+      url: `${APIBaseUrl.APP}/accounts/${account.id}`,
+      data: fData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     reset();
+  };
+
+  const processImage = (event: any) => {
+    const imageFile = event.target.files[0];
+    setImage(imageFile);
   };
 
   return (
@@ -42,7 +69,11 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
       </SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.coverImage}>
-          <UploadIcon />
+          {/*<Upload className={styles.rightInTheMiddle} {...props}>*/}
+          {/*  <AntButton icon={<CloudUploadOutlined />} />*/}
+          {/*</Upload>*/}
+          <input type="file" onChange={processImage} accept="image/*" />
+          {/*{image}*/}
           <ProfileImage className={classNames(styles.horizontalCenter, styles.profileImage)} />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>

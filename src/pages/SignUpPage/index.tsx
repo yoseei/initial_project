@@ -14,12 +14,12 @@ import styles from "./style.module.scss";
 import classNames from "classnames";
 import Sidebar from "components/molecules/Sidebar";
 import FlexBox from "components/atoms/FlexBox";
+import { useNavigate } from "react-router-dom";
+import { routes } from "constants/routes";
 
 type SignUpFormData = {
-  account: {
-    email: string;
-    password: string;
-  };
+  email: string;
+  password: string;
 };
 
 type SignUpResponse = {
@@ -35,17 +35,19 @@ const SignUpPage: VFC = () => {
   } = useForm<SignUpFormData>();
 
   const { refetchAccount } = useCurrentAccount();
+  const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (params) => {
     const res = await HttpClient.request<SignUpResponse>({
       method: "POST",
       url: `${APIBaseUrl.AUTH}/sign_up`,
-      data: params,
+      data: { account: { ...params } },
     });
     if (!res.data.token) return;
 
     localStorage.setItem(PersistenceKeys.TOKEN, res.data.token);
     await refetchAccount();
+    navigate(routes.myPage());
   });
 
   return (
@@ -61,7 +63,7 @@ const SignUpPage: VFC = () => {
           <form onSubmit={onSubmit}>
             <div className={styles.xxlMarginBottom}>
               <Input
-                {...register("account.email", {
+                {...register("email", {
                   required: "メールアドレスは必須です",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
@@ -80,7 +82,7 @@ const SignUpPage: VFC = () => {
             </div>
             <div className={styles.lgMarginBottom}>
               <Input
-                {...register("account.password", {
+                {...register("password", {
                   required: "パスワードは必須です",
                   // pattern: {
                   //   value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
