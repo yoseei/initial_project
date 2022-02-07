@@ -20,7 +20,7 @@ const CurrentAccountProvider: FC = ({ children }) => {
   const token = localStorage.getItem(PersistenceKeys.TOKEN);
 
   const fetchMe = useCallback(async () => {
-    console.log("fetchMe", token);
+    // console.log("fetchMe", token);
     if (!token) return;
 
     const [, p] = token.split(".");
@@ -41,7 +41,7 @@ const CurrentAccountProvider: FC = ({ children }) => {
   useEffect(() => {
     fetchMe();
   }, [fetchMe]);
-  console.log("isLoggedIn", !!token);
+  // console.log("isLoggedIn", !!token);
 
   return (
     <currentAccountContext.Provider value={{ account, isLoggedIn: !!token, setAccount, fetchMe }}>

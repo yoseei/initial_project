@@ -33,7 +33,7 @@ const MyPage: VFC = () => {
   const [isWorkHistoryModal, setIsWorkHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
 
-  console.log(isWorkHistoryModal);
+  // console.log(isWorkHistoryModal);
   return (
     <>
       <FlexBox>

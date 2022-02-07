@@ -16,6 +16,7 @@ import { HttpClient } from "lib/axios";
 import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
+import axios from "axios";
 
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,27 +33,39 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
   } = useForm<ProfileFormData>();
   const [image, setImage] = useState<File>();
   const { account } = useCurrentAccount();
+  const token = localStorage.getItem("AUTH_TOKEN");
 
   const closeModal = () => {
     setIsModal(!isModal);
   };
 
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
-    console.log(account);
     if (!account?.id) return;
 
-    console.log(image);
     setProfileData(data);
     setIsModal(!isModal);
     const fData = new FormData();
-    fData.append("account.avatar", image as Blob);
+    console.log(image);
+    if (image) {
+      console.log("///////////////");
+      fData.append("account[avatar]", image);
+      fData.append("aaaa", "bbbbbbbb");
+    }
+
+    console.log(fData.get("account[avatar]"));
+    console.log(fData.get("aaaa"));
+    // await axios.request({
+    //   method: "PATCH",
+    //   url: `${APIBaseUrl.APP}/accounts/${account.id}`,
+    //   data: fData,
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
     await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,
       data: fData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
     });
     reset();
   };
@@ -77,25 +90,17 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
           <ProfileImage className={classNames(styles.horizontalCenter, styles.profileImage)} />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
-          <Input text="名前" {...register("lastName", { required: true })} />
+          <Input text="名前" {...register("lastName")} />
           <ErrorMessage errors={errors} name="lastName" />
-          <Input {...register("firstName", { required: true })} />
+          <Input {...register("firstName")} />
         </FlexBox>
-        <Input
-          text="住まい"
-          className={styles.smMarginBottom}
-          {...register("address", { required: true })}
-        />
-        <Input
-          text="性別"
-          className={styles.smMarginBottom}
-          {...register("gender", { required: true })}
-        />
+        <Input text="住まい" className={styles.smMarginBottom} {...register("address")} />
+        <Input text="性別" className={styles.smMarginBottom} {...register("gender")} />
         <Input
           type="date"
           text="日程"
           className={classNames(styles.smMarginBottom, styles.calender)}
-          {...register("date", { required: true })}
+          {...register("date")}
         />
         <FlexBox gap="xs" justify="end">
           <Button color="black" type="button" onClick={closeModal}>

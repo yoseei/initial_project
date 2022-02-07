@@ -14,6 +14,7 @@ import styles from "./style.module.scss";
 import classNames from "classnames";
 import Sidebar from "components/molecules/Sidebar";
 import FlexBox from "components/atoms/FlexBox";
+import { Link } from "react-router-dom";
 
 type SignInFormData = {
   email: string;
@@ -111,7 +112,7 @@ const SignInPage: VFC = () => {
               color="darkGray"
               className={classNames(styles.lgMarginBottom, styles.sPadding)}
             >
-              新規登録はこちら
+              <Link to="/sign_up">新規登録はこちら</Link>
             </Button>
           </form>
         </div>

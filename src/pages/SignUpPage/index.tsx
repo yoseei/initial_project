@@ -14,7 +14,7 @@ import styles from "./style.module.scss";
 import classNames from "classnames";
 import Sidebar from "components/molecules/Sidebar";
 import FlexBox from "components/atoms/FlexBox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { routes } from "constants/routes";
 
 type SignUpFormData = {
@@ -90,6 +90,7 @@ const SignUpPage: VFC = () => {
                   //     "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
                   // },
                 })}
+                type="password"
                 icon={<EyeOutlined />}
                 text="パスワード"
               />
@@ -111,7 +112,7 @@ const SignUpPage: VFC = () => {
               color="darkGray"
               className={classNames(styles.lgMarginBottom, styles.sPadding)}
             >
-              ログインはこちら
+              <Link to="/sign_in">ログインはこちら</Link>
             </Button>
           </form>
         </div>

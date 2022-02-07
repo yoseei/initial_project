@@ -6,7 +6,7 @@ import classNames from "classnames";
 type InputProps = {
   placeholder?: string;
   icon?: ReactNode;
-  type?: "date" | "file";
+  type?: "date" | "file" | "password";
   text?: string;
   className?: string;
 };

@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import classNames from "classnames";
 import styles from "components/atoms/Button/style.module.scss";
 
 type ButtonProps = {
   type: "button" | "submit";
   color?: "primary" | "darkGray" | "lightGray" | "danger" | "black";
-  children: string;
+  children: string | ReactNode;
   className?: string;
   size?: "small";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
