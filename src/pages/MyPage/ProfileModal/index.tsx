@@ -33,7 +33,6 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
   } = useForm<ProfileFormData>();
   const [image, setImage] = useState<File>();
   const { account } = useCurrentAccount();
-  const token = localStorage.getItem("AUTH_TOKEN");
 
   const closeModal = () => {
     setIsModal(!isModal);
@@ -45,27 +44,22 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
     setProfileData(data);
     setIsModal(!isModal);
     const fData = new FormData();
-    console.log(image);
+
     if (image) {
-      console.log("///////////////");
       fData.append("account[avatar]", image);
-      fData.append("aaaa", "bbbbbbbb");
     }
 
-    console.log(fData.get("account[avatar]"));
-    console.log(fData.get("aaaa"));
-    // await axios.request({
-    //   method: "PATCH",
-    //   url: `${APIBaseUrl.APP}/accounts/${account.id}`,
-    //   data: fData,
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
+    for (let value of fData.entries()) {
+      console.log(value);
+    }
+
     await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,
       data: fData,
+      headers: {
+        "content-type": "multipart/form-data",
+      },
     });
     reset();
   };
