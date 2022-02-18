@@ -5,12 +5,13 @@ import UploadIcon from "components/atoms/ProfileImage/UploadIcon";
 
 type ProfileImageProps = {
   className?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };
-const ProfileImage: FC<ProfileImageProps> = ({ className }) => {
+const ProfileImage: FC<ProfileImageProps> = ({ className, onChange }) => {
   return (
     <div className={classNames(styles.root, className)}>
       <div className={styles.image} />
-      <UploadIcon />
+      <UploadIcon onChange={onChange} name="avatarUrl" />
     </div>
   );
 };

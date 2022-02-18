@@ -33,7 +33,6 @@ const MyPage: VFC = () => {
   const [isWorkHistoryModal, setIsWorkHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
 
-  // console.log(isWorkHistoryModal);
   return (
     <>
       <FlexBox>
@@ -45,7 +44,12 @@ const MyPage: VFC = () => {
           direction="column"
           style={{ flex: "1" }}
         >
-          <MyPageTop isModal={isModal} setIsModal={setIsModal} profileData={profileData} />
+          <MyPageTop
+            isModal={isModal}
+            setIsModal={setIsModal}
+            profileData={profileData}
+            signOut={signOut}
+          />
           <History
             historyType="職歴"
             className={classNames(styles.mdMarginTop, styles.lgMarginBottom)}

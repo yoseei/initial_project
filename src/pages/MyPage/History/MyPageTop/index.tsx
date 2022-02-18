@@ -12,8 +12,9 @@ type MyPageProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   isModal: boolean;
   profileData?: ProfileFormData;
+  signOut: () => void;
 };
-const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData }) => {
+const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData, signOut }) => {
   const openModal = () => {
     setIsModal(!isModal);
   };
@@ -52,7 +53,13 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData }) => {
       )}
 
       <FlexBox gap="xs">
-        <Button type="button" color="danger" className={styles.xsMarginRight} size="small">
+        <Button
+          type="button"
+          color="danger"
+          className={styles.xsMarginRight}
+          size="small"
+          onClick={signOut}
+        >
           ログアウト
         </Button>
         <Button type="button" color="lightGray" size="small" onClick={openModal}>

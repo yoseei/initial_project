@@ -8,15 +8,12 @@ import classNames from "classnames";
 import ProfileImage from "components/atoms/ProfileImage";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ProfileFormData } from "pages/MyPage/index";
-import UploadIcon from "components/atoms/ProfileImage/UploadIcon";
 import { ErrorMessage } from "@hookform/error-message";
-import { CloudUploadOutlined, InboxOutlined } from "@ant-design/icons";
-import { Upload, message, Button as AntButton } from "antd";
 import { HttpClient } from "lib/axios";
 import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
-import axios from "axios";
+import CoverImage from "components/atoms/CoverImage";
 
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -69,6 +66,7 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
     setImage(imageFile);
   };
 
+  console.log(image);
   return (
     <div className={classNames(styles.rightInTheMiddle, styles.profileModal)}>
       <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
@@ -76,12 +74,11 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
       </SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.coverImage}>
-          {/*<Upload className={styles.rightInTheMiddle} {...props}>*/}
-          {/*  <AntButton icon={<CloudUploadOutlined />} />*/}
-          {/*</Upload>*/}
-          <input type="file" onChange={processImage} accept="image/*" />
-          {/*{image}*/}
-          <ProfileImage className={classNames(styles.horizontalCenter, styles.profileImage)} />
+          <CoverImage onChange={processImage} />
+          <ProfileImage
+            className={classNames(styles.horizontalCenter, styles.profileImage)}
+            onChange={processImage}
+          />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
           <Input text="名前" {...register("lastName")} />
