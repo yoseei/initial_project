@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import Button from "components/atoms/Button";
 import styles from "./style.module.scss";
-import { SectionTitle } from "components/atoms/Text";
+import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
 import Input from "components/atoms/Input";
 import FlexBox from "components/atoms/FlexBox";
 import classNames from "classnames";
@@ -37,7 +37,7 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
 
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
     if (!account?.id) return;
-
+    console.log(data);
     setProfileData(data);
     setIsModal(!isModal);
     const fData = new FormData();
@@ -86,7 +86,16 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
           <Input {...register("firstName")} />
         </FlexBox>
         <Input text="住まい" className={styles.smMarginBottom} {...register("address")} />
-        <Input text="性別" className={styles.smMarginBottom} {...register("gender")} />
+
+        <div className={styles.smMarginBottom}>
+          <BodyTextSmall color="darkGray">性別</BodyTextSmall>
+          <select id="genderSelect" className={styles.select} {...register("gender")}>
+            <option value=""></option>
+            <option value="男性">男性</option>
+            <option value="女性">女性</option>
+          </select>
+        </div>
+
         <Input
           type="date"
           text="日程"

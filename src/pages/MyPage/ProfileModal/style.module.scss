@@ -28,6 +28,15 @@
     }
   }
 
+  .select {
+    display: block;
+    color: $black;
+    border: 1px solid $light-gray;
+    border-radius: $radius-sm;
+    padding: $space-s;
+    width: $selectBox-width;
+    appearance: auto;
+  }
   .calender {
     width: $calenderInput-width;
   }
