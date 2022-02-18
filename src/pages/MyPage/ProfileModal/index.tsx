@@ -69,16 +69,10 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
   console.log(image);
   return (
     <div className={classNames(styles.rightInTheMiddle, styles.profileModal)}>
-      <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
-        プロフィール
-      </SectionTitle>
+      <SectionTitle className={styles.textCenter}>プロフィール</SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.coverImage}>
-          <CoverImage onChange={processImage} />
-          <ProfileImage
-            className={classNames(styles.horizontalCenter, styles.profileImage)}
-            onChange={processImage}
-          />
+        <div className={styles.avatarWrapper}>
+          <ProfileImage className={styles.horizontalCenter} onChange={processImage} />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
           <Input text="名前" {...register("lastName")} />

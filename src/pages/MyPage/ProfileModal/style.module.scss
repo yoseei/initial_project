@@ -7,25 +7,11 @@
   padding: $space-md $space-lg + 8px;
   background: $white;
 
-  .coverImage {
+  .avatarWrapper {
     position: relative;
-    background-image: url("../../../components/atoms/Images/Rectangle 180.png");
-    background-size: contain;
-    height: $profileCoverImage-height;
-    // 84pxにしたかったが、丁度いい$spaceのサイズがないため
-    margin-bottom: $space-s * 7;
-
-    .uploadIcon {
-      background-image: url("../../../components/atoms/Images/Vector.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: $uploadIcon_size;
-      height: $uploadIcon_size;
-    }
-    .profileImage {
-      // profileImageの中心が、coverImageの下線に重なるように
-      bottom: -60px;
-    }
+    margin-top: $space-md;
+    margin-bottom: $space-md;
+    height: $avatar-height;
   }
 
   .select {
