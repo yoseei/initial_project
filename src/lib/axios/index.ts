@@ -24,7 +24,7 @@ HttpClient.interceptors.request.use((config: AxiosRequestConfig) => {
       newConfig.params = humps.decamelizeKeys(config.params);
     }
 
-    if (config.params) {
+    if (config.data) {
       newConfig.data = humps.decamelizeKeys(config.data);
     }
   }

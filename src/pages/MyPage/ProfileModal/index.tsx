@@ -45,6 +45,8 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
       fData.append("account[avatarUrl]", image);
     }
 
+    // Object.entries(data).map(([key, value]) => fData.append(`account[${key}}`, value));
+
     const resAvatar = await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,

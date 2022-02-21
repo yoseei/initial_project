@@ -22,7 +22,7 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData, signOut 
   const loading = () => {
     if (!profileData) return <div>Loading...</div>;
   };
-  console.log("//////" + profileData?.avatarUrl);
+
   return (
     <div className={classNames(styles.root, styles.spaceBetween)}>
       {profileData ? (
