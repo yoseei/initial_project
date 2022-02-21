@@ -22,12 +22,12 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData, signOut 
   const loading = () => {
     if (!profileData) return <div>Loading...</div>;
   };
-
+  console.log("//////" + profileData?.avatarUrl);
   return (
     <div className={classNames(styles.root, styles.spaceBetween)}>
       {profileData ? (
         <FlexBox>
-          <ProfileImage />
+          <ProfileImage src={profileData.avatarUrl} />
           <div className={styles.smMarginLeft}>
             <BodyTextSmall className={styles.xsMarginBottom}>かな</BodyTextSmall>
             <SectionTitle className={styles.xsMarginBottom}>
@@ -45,7 +45,7 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData, signOut 
               content={profileData.address}
             />
             <ProfileRow className={styles.xsMarginBottom} title="最終学歴" content="" />
-            <ProfileRow title="誕生日" content="" />
+            <ProfileRow title="誕生日" content={profileData.birthday} />
           </div>
         </FlexBox>
       ) : (

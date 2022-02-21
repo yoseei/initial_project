@@ -42,14 +42,10 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
     const fData = new FormData();
 
     if (image) {
-      fData.append("account[avatar]", image);
+      fData.append("account[avatarUrl]", image);
     }
 
-    for (let value of fData.entries()) {
-      console.log(value);
-    }
-
-    await HttpClient.request<Account>({
+    const resAvatar = await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,
       data: fData,
@@ -57,6 +53,17 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
         "content-type": "multipart/form-data",
       },
     });
+
+    const res = await HttpClient.request<Account>({
+      method: "PATCH",
+      url: `${APIBaseUrl.APP}/accounts/${account.id}`,
+      data: { account: data },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    console.log(res);
     reset();
   };
 
@@ -92,8 +99,8 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
             {...register("gender", { required: true })}
           >
             <option value=""></option>
-            <option value="男性">男性</option>
-            <option value="女性">女性</option>
+            <option value="male">male</option>
+            <option value="female">female</option>
           </select>
         </div>
 
