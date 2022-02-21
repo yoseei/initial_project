@@ -7,7 +7,7 @@ import { Account } from "data/account";
 import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import Button from "components/atoms/Button";
-import Input from "components/atoms/Input";
+import Input from "components/atoms/InputGroup";
 import { Label, PageTitle } from "components/atoms/Text";
 import { EyeOutlined } from "@ant-design/icons";
 import styles from "./style.module.scss";

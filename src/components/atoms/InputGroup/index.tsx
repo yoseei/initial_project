@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import styles from "components/atoms/Input/style.module.scss";
+import styles from "components/atoms/InputGroup/style.module.scss";
 import { BodyTextSmall } from "components/atoms/Text";
 import classNames from "classnames";
 
@@ -11,7 +11,7 @@ type InputProps = {
   className?: string;
 };
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const InputGroup = React.forwardRef<HTMLInputElement, InputProps>(
   ({ placeholder, icon, type = "text", text, className, ...props }, ref) => {
     return (
       <div className={classNames(styles.root, className)}>
@@ -24,4 +24,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-export default Input;
+export default InputGroup;

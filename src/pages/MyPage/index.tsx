@@ -16,6 +16,7 @@ export type ProfileFormData = {
   gender: string;
   date: string;
   avatarUrl: string;
+  birthday: string;
 };
 
 export type WorkHistoryFormData = {

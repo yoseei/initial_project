@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./style.module.scss";
 import { SectionTitle } from "components/atoms/Text";
 import FlexBox from "components/atoms/FlexBox";
-import Input from "components/atoms/Input";
+import InputGroup from "components/atoms/InputGroup";
 import Button from "components/atoms/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { WorkHistoryFormData } from "pages/MyPage/index";
@@ -33,20 +33,20 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
         職歴
       </SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input text="企業名" {...register("companyName", { required: true })} />
-        <Input
+        <InputGroup text="企業名" {...register("companyName", { required: true })} />
+        <InputGroup
           text="部署・役職"
           className={styles.smMarginBottom}
           {...register("position", { required: true })}
         />
         <FlexBox>
-          <Input
+          <InputGroup
             type="date"
             text="日程"
             className={classNames(styles.smMarginBottom, styles.calender)}
             {...register("dateFrom", { required: true })}
           />
-          <Input
+          <InputGroup
             type="date"
             className={classNames(styles.smMarginBottom, styles.calender)}
             {...register("dateTo", { required: true })}

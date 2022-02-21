@@ -2,18 +2,16 @@ import React, { FC, useState } from "react";
 import Button from "components/atoms/Button";
 import styles from "./style.module.scss";
 import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
-import Input from "components/atoms/Input";
 import FlexBox from "components/atoms/FlexBox";
 import classNames from "classnames";
 import ProfileImage from "components/atoms/ProfileImage";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ProfileFormData } from "pages/MyPage/index";
-import { ErrorMessage } from "@hookform/error-message";
 import { HttpClient } from "lib/axios";
 import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
-import CoverImage from "components/atoms/CoverImage";
+import InputGroup from "components/atoms/InputGroup";
 
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +27,7 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
     formState: { errors },
   } = useForm<ProfileFormData>();
   const [image, setImage] = useState<File>();
+  const [previewImage, setPreviewImage] = useState<string>();
   const { account } = useCurrentAccount();
 
   const closeModal = () => {
@@ -37,7 +36,7 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
 
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
     if (!account?.id) return;
-    console.log(data);
+    setPreviewImage(data.avatarUrl);
     setProfileData(data);
     setIsModal(!isModal);
     const fData = new FormData();
@@ -63,38 +62,46 @@ const ProfileModal: FC<ProfileModalProps> = ({ setIsModal, isModal, setProfileDa
 
   const processImage = (event: any) => {
     const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
     setImage(imageFile);
+    setPreviewImage(imageUrl);
   };
 
-  console.log(image);
   return (
     <div className={classNames(styles.rightInTheMiddle, styles.profileModal)}>
       <SectionTitle className={styles.textCenter}>プロフィール</SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.avatarWrapper}>
-          <ProfileImage className={styles.horizontalCenter} onChange={processImage} />
+          <ProfileImage
+            className={styles.horizontalCenter}
+            onChange={processImage}
+            src={previewImage}
+          />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
-          <Input text="名前" {...register("lastName")} />
-          <ErrorMessage errors={errors} name="lastName" />
-          <Input {...register("firstName")} />
+          <InputGroup text="名前" {...register("lastName", { required: true })} />
+          <InputGroup {...register("firstName", { required: true })} />
         </FlexBox>
-        <Input text="住まい" className={styles.smMarginBottom} {...register("address")} />
+        <InputGroup text="住まい" className={styles.smMarginBottom} {...register("address")} />
 
         <div className={styles.smMarginBottom}>
           <BodyTextSmall color="darkGray">性別</BodyTextSmall>
-          <select id="genderSelect" className={styles.select} {...register("gender")}>
+          <select
+            id="genderSelect"
+            className={styles.select}
+            {...register("gender", { required: true })}
+          >
             <option value=""></option>
             <option value="男性">男性</option>
             <option value="女性">女性</option>
           </select>
         </div>
 
-        <Input
+        <InputGroup
           type="date"
-          text="日程"
+          text="誕生日"
           className={classNames(styles.smMarginBottom, styles.calender)}
-          {...register("date")}
+          {...register("birthday")}
         />
         <FlexBox gap="xs" justify="end">
           <Button color="black" type="button" onClick={closeModal}>
