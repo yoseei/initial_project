@@ -6,14 +6,14 @@ import UploadIcon from "components/atoms/ProfileImage/UploadIcon";
 type ProfileImageProps = {
   className?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
-  src?: string;
+  previewImage?: string;
 };
-const ProfileImage: FC<ProfileImageProps> = ({ className, onChange, src }) => {
+const ProfileImage: FC<ProfileImageProps> = ({ className, onChange, previewImage }) => {
   return (
     <div className={classNames(styles.root, className)}>
-      {src ? (
+      {previewImage ? (
         <div className={styles.previewImage}>
-          <img src={src} alt="preview" />
+          <img src={previewImage} alt="preview" />
         </div>
       ) : (
         <div className={styles.image} />

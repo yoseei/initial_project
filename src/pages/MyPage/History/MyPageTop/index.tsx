@@ -27,7 +27,7 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData, signOut 
     <div className={classNames(styles.root, styles.spaceBetween)}>
       {profileData ? (
         <FlexBox>
-          <ProfileImage src={profileData.avatarUrl} />
+          <ProfileImage previewImage={profileData.avatarUrl} />
           <div className={styles.smMarginLeft}>
             <BodyTextSmall className={styles.xsMarginBottom}>かな</BodyTextSmall>
             <SectionTitle className={styles.xsMarginBottom}>

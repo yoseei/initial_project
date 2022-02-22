@@ -40,6 +40,13 @@ const ProfileModal: FC<ProfileModalProps> = ({
     setIsModal(!isModal);
   };
 
+  const processImage = (event: any) => {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setImage(imageFile);
+    setPreviewImage(imageUrl);
+  };
+
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
     if (!account?.id) return;
 
@@ -48,8 +55,6 @@ const ProfileModal: FC<ProfileModalProps> = ({
     if (image) {
       fData.append("account[avatar]", image);
     }
-
-    Object.entries(data).map(([key, value]) => fData.append(`account[${key}]`, value));
 
     const resAvatar = await HttpClient.request<Account>({
       method: "PATCH",
@@ -75,31 +80,22 @@ const ProfileModal: FC<ProfileModalProps> = ({
     reset();
   };
 
-  const processImage = (event: any) => {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImage(imageFile);
-    setPreviewImage(imageUrl);
-  };
-
-  console.log(previewImage);
-  console.log(profileData);
   return (
     <div className={classNames(styles.rightInTheMiddle, styles.profileModal)}>
       <SectionTitle className={styles.textCenter}>プロフィール</SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.avatarWrapper}>
-          {profileData?.avatarUrl ? (
+          {previewImage ? (
             <ProfileImage
               className={styles.horizontalCenter}
               onChange={processImage}
-              src={profileData.avatarUrl}
+              previewImage={previewImage}
             />
           ) : (
             <ProfileImage
               className={styles.horizontalCenter}
               onChange={processImage}
-              src={previewImage}
+              previewImage={profileData?.avatarUrl}
             />
           )}
         </div>
