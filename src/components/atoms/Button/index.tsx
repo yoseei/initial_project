@@ -4,7 +4,7 @@ import styles from "components/atoms/Button/style.module.scss";
 
 type ButtonProps = {
   type: "button" | "submit";
-  color?: "primary" | "darkGray" | "lightGray" | "danger" | "black";
+  color?: "primary" | "darkGray" | "lightGray" | "danger" | "black" | "white";
   children: string | ReactNode;
   className?: string;
   size?: "small";
@@ -23,6 +23,7 @@ const Button: FC<ButtonProps> = ({ type, color, children, className, size, onCli
           { [styles.lightGray]: color === "lightGray" },
           { [styles.danger]: color === "danger" },
           { [styles.black]: color === "black" },
+          { [styles.white]: color === "white" },
           { [styles.small]: size === "small" }
         )}
         onClick={onClick}

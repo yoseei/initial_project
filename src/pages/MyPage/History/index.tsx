@@ -24,7 +24,7 @@ const History: FC<HistoryProps> = ({
         color="lightGray"
         type="button"
         className={styles.mdMarginTop}
-        onClick={() => setIsWorkHistoryModal(true)}
+        onClick={() => setIsWorkHistoryModal(!isWorkHistoryModal)}
       >
         {`${historyType}を追加`}
       </Button>

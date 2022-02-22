@@ -22,8 +22,8 @@ export type ProfileFormData = {
 export type WorkHistoryFormData = {
   companyName: string;
   position: string;
-  dateTo: string;
-  dateFrom: string;
+  sinceDate: string;
+  untilDate: string;
   biography: string;
 };
 
@@ -54,6 +54,8 @@ const MyPage: VFC = () => {
           <History
             historyType="職歴"
             className={classNames(styles.mdMarginTop, styles.lgMarginBottom)}
+            setIsWorkHistoryModal={setIsWorkHistoryModal}
+            isWorkHistoryModal={isWorkHistoryModal}
           />
           <History
             historyType="学歴"

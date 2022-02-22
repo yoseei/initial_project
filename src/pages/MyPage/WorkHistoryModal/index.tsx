@@ -1,7 +1,7 @@
 import React, { VFC } from "react";
 import classNames from "classnames";
 import styles from "./style.module.scss";
-import { SectionTitle } from "components/atoms/Text";
+import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
 import FlexBox from "components/atoms/FlexBox";
 import InputGroup from "components/atoms/InputGroup";
 import Button from "components/atoms/Button";
@@ -33,32 +33,40 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
         職歴
       </SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup text="企業名" {...register("companyName", { required: true })} />
+        <InputGroup
+          text="企業名"
+          {...register("companyName", { required: true })}
+          className={styles.smMarginBottom}
+        />
         <InputGroup
           text="部署・役職"
           className={styles.smMarginBottom}
           {...register("position", { required: true })}
         />
-        <FlexBox>
-          <InputGroup
-            type="date"
-            text="日程"
-            className={classNames(styles.smMarginBottom, styles.calender)}
-            {...register("dateFrom", { required: true })}
-          />
-          <InputGroup
-            type="date"
-            className={classNames(styles.smMarginBottom, styles.calender)}
-            {...register("dateTo", { required: true })}
-          />
+        <FlexBox direction="column">
+          <BodyTextSmall color="darkGray">入社期間</BodyTextSmall>
+          <FlexBox gap="md">
+            <InputGroup
+              type="date"
+              className={classNames(styles.smMarginBottom, styles.calender)}
+              {...register("sinceDate", { required: true })}
+            />
+            <InputGroup
+              type="date"
+              text=""
+              className={classNames(styles.calender)}
+              {...register("untilDate", { required: true })}
+            />
+          </FlexBox>
         </FlexBox>
-        <FlexBox>
-          <Button color="black" type="button" onClick={() => console.log("削除ぼたんクリック！")}>
+        <FlexBox justify="space-between">
+          <Button color="danger" type="button" onClick={() => console.log("削除ぼたんクリック！")}>
             削除する
           </Button>
+          -
           <FlexBox gap="xs" justify="end">
             <Button
-              color="black"
+              color="white"
               type="button"
               onClick={() => setIsWorkHistoryModal(!isWorkHistoryModal)}
             >
