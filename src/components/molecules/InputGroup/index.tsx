@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import styles from "components/atoms/InputGroup/style.module.scss";
+import styles from "components/molecules/InputGroup/style.module.scss";
 import { BodyTextSmall } from "components/atoms/Text";
 import classNames from "classnames";
 

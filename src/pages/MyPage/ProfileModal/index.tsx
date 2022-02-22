@@ -11,7 +11,7 @@ import { HttpClient } from "lib/axios";
 import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
-import InputGroup from "components/atoms/InputGroup";
+import InputGroup from "components/molecules/InputGroup";
 
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;

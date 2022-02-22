@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./style.module.scss";
 import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
 import FlexBox from "components/atoms/FlexBox";
-import InputGroup from "components/atoms/InputGroup";
+import InputGroup from "components/molecules/InputGroup";
 import Button from "components/atoms/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { WorkHistoryFormData } from "pages/MyPage/index";
@@ -63,7 +63,7 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
           <Button color="danger" type="button" onClick={() => console.log("削除ぼたんクリック！")}>
             削除する
           </Button>
-          -
+
           <FlexBox gap="xs" justify="end">
             <Button
               color="white"
