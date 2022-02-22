@@ -7,6 +7,7 @@ import ProfileImage from "components/atoms/ProfileImage";
 import classNames from "classnames";
 import FlexBox from "components/atoms/FlexBox";
 import { ProfileFormData } from "pages/MyPage/index";
+import Avatar from "pages/MyPage/Avatar";
 
 type MyPageProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +28,7 @@ const MyPageTop: FC<MyPageProps> = ({ setIsModal, isModal, profileData, signOut 
     <div className={classNames(styles.root, styles.spaceBetween)}>
       {profileData ? (
         <FlexBox>
-          <ProfileImage previewImage={profileData.avatarUrl} />
+          <Avatar />
           <div className={styles.smMarginLeft}>
             <BodyTextSmall className={styles.xsMarginBottom}>かな</BodyTextSmall>
             <SectionTitle className={styles.xsMarginBottom}>

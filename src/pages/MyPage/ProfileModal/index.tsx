@@ -33,20 +33,10 @@ const ProfileModal: FC<ProfileModalProps> = ({
     formState: { errors },
   } = useForm<ProfileFormData>();
   const [image, setImage] = useState<File>();
-  const [previewImage, setPreviewImage] = useState<string>();
   const { account } = useCurrentAccount();
 
   const closeModal = () => {
     setIsModal(!isModal);
-  };
-
-  const processImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-    const imageFile = event.target.files[0];
-
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImage(imageFile);
-    setPreviewImage(imageUrl);
   };
 
   const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
@@ -58,7 +48,7 @@ const ProfileModal: FC<ProfileModalProps> = ({
       fData.append("account[avatar]", image);
     }
 
-    const resAvatar = await HttpClient.request<Account>({
+    await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,
       data: fData,
@@ -76,7 +66,6 @@ const ProfileModal: FC<ProfileModalProps> = ({
       },
     });
 
-    setPreviewImage(resAvatar.data.avatarUrl);
     setProfileData(resProfileData.data);
     setIsModal(!isModal);
     reset();
@@ -89,8 +78,8 @@ const ProfileModal: FC<ProfileModalProps> = ({
         <div className={styles.avatarWrapper}>
           <ProfileImage
             className={styles.horizontalCenter}
-            onChange={processImage}
-            previewImage={previewImage ?? profileData?.avatarUrl}
+            setImage={setImage}
+            avatarImage={profileData?.avatarUrl}
           />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
