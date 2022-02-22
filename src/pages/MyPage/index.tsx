@@ -65,7 +65,12 @@ const MyPage: VFC = () => {
       {isModal ? (
         <>
           <div className={styles.overLay} />
-          <ProfileModal setIsModal={setIsModal} isModal={isModal} setProfileData={setProfileData} />
+          <ProfileModal
+            setIsModal={setIsModal}
+            isModal={isModal}
+            setProfileData={setProfileData}
+            profileData={profileData}
+          />
         </>
       ) : (
         ""

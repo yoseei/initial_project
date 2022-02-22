@@ -9,16 +9,23 @@ type InputProps = {
   type?: "date" | "file" | "password";
   text?: string;
   className?: string;
+  defaultValue?: string;
 };
 
 const InputGroup = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ placeholder, icon, type = "text", text, className, ...props }, ref) => {
+  ({ placeholder, icon, type = "text", text, className, defaultValue, ...props }, ref) => {
     return (
       <div className={classNames(styles.root, className)}>
         <div className={styles.xsMarginBottom}>
           <BodyTextSmall color="darkGray">{text}</BodyTextSmall>
         </div>
-        <input placeholder={placeholder} ref={ref} type={type} {...props} />
+        <input
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          ref={ref}
+          type={type}
+          {...props}
+        />
         <span>{icon}</span>
       </div>
     );
