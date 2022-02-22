@@ -5,6 +5,7 @@
   text-align: center;
   border-radius: $radius-xs;
   padding: $space-xs $space-s;
+  font-weight: bold;
 }
 
 //----Props Css-----//
@@ -36,3 +37,4 @@
 .small {
   font-size: $f-size-label;
 }
+

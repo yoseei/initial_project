@@ -93,12 +93,6 @@ const ProfileModal: FC<ProfileModalProps> = ({
             {...register("firstName", { required: true })}
           />
         </FlexBox>
-        <InputGroup
-          defaultValue={profileData?.address}
-          text="住まい"
-          className={styles.smMarginBottom}
-          {...register("address")}
-        />
 
         <div className={styles.smMarginBottom}>
           <BodyTextSmall color="darkGray">性別</BodyTextSmall>

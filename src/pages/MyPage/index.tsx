@@ -12,7 +12,6 @@ import WorkHistoryModal from "pages/MyPage/WorkHistoryModal";
 export type ProfileFormData = {
   lastName: string;
   firstName: string;
-  address: string;
   gender: string;
   date: string;
   avatarUrl: string;
