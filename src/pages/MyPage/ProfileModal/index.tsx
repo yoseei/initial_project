@@ -40,8 +40,10 @@ const ProfileModal: FC<ProfileModalProps> = ({
     setIsModal(!isModal);
   };
 
-  const processImage = (event: any) => {
+  const processImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
     const imageFile = event.target.files[0];
+
     const imageUrl = URL.createObjectURL(imageFile);
     setImage(imageFile);
     setPreviewImage(imageUrl);
@@ -85,19 +87,11 @@ const ProfileModal: FC<ProfileModalProps> = ({
       <SectionTitle className={styles.textCenter}>プロフィール</SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.avatarWrapper}>
-          {previewImage ? (
-            <ProfileImage
-              className={styles.horizontalCenter}
-              onChange={processImage}
-              previewImage={previewImage}
-            />
-          ) : (
-            <ProfileImage
-              className={styles.horizontalCenter}
-              onChange={processImage}
-              previewImage={profileData?.avatarUrl}
-            />
-          )}
+          <ProfileImage
+            className={styles.horizontalCenter}
+            onChange={processImage}
+            previewImage={previewImage ?? profileData?.avatarUrl}
+          />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
           <InputGroup
