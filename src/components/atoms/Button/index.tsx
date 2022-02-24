@@ -9,14 +9,25 @@ type ButtonProps = {
   className?: string;
   size?: "small";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  icon?: ReactNode;
+  flex?: boolean;
 };
-const Button: FC<ButtonProps> = ({ type, color, children, className, size, onClick }) => {
+const Button: FC<ButtonProps> = ({
+  type,
+  color,
+  children,
+  className,
+  size,
+  onClick,
+  icon,
+  flex,
+}) => {
   return (
     <div>
       <button
         type={type}
         className={classNames(
-          styles.root,
+          styles.button,
           className,
           { [styles.primary]: color === "primary" },
           { [styles.darkGray]: color === "darkGray" },
@@ -24,10 +35,12 @@ const Button: FC<ButtonProps> = ({ type, color, children, className, size, onCli
           { [styles.danger]: color === "danger" },
           { [styles.black]: color === "black" },
           { [styles.white]: color === "white" },
-          { [styles.small]: size === "small" }
+          { [styles.small]: size === "small" },
+          { [styles.flex]: flex }
         )}
         onClick={onClick}
       >
+        {icon}
         {children}
       </button>
     </div>

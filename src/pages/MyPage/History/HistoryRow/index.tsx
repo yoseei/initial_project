@@ -1,37 +1,45 @@
-import React from "react";
+import React, { VFC } from "react";
 import styles from "pages/MyPage/History/HistoryRow/style.module.scss";
 import Button from "components/atoms/Button";
 import { BodyText, BodyTextLarge, BodyTextSmall } from "components/atoms/Text";
 import classNames from "classnames";
 import FlexBox from "components/atoms/FlexBox";
+import { WorkHistoryData } from "pages/MyPage/index";
 
-const HistoryRow = () => {
+type HistoryRowProps = {
+  workHistoryData?: WorkHistoryData[];
+};
+const HistoryRow: VFC<HistoryRowProps> = ({ workHistoryData }) => {
   return (
-    <div className={styles.root}>
-      <div className={styles.spaceBetween}>
-        <FlexBox>
-          <div className={classNames(styles.alignItemsCenter)}>
-            <BodyTextSmall color="darkGray" className={styles.smMarginRight}>
-              2020-01 - 現在
-            </BodyTextSmall>
+    <>
+      {workHistoryData?.map((workHistory) => (
+        <div className={styles.root} key={workHistory.id}>
+          <div className={styles.spaceBetween}>
+            <FlexBox>
+              <div className={classNames(styles.alignItemsCenter)}>
+                <BodyTextSmall color="darkGray" className={styles.smMarginRight}>
+                  {workHistory.sinceDate} - {workHistory.untilDate}
+                </BodyTextSmall>
+              </div>
+              <div>
+                <BodyTextLarge bold className={styles.xsMarginBottom}>
+                  {workHistory.name}
+                </BodyTextLarge>
+                <BodyText color="darkGray">{workHistory.position}</BodyText>
+              </div>
+            </FlexBox>
+            <div className={styles.alignItemsCenter}>
+              <Button size="small" color="lightGray" type="button">
+                編集する
+              </Button>
+            </div>
           </div>
-          <div>
-            <BodyTextLarge bold className={styles.xsMarginBottom}>
-              Simula.labs
-            </BodyTextLarge>
-            <BodyText color="darkGray">エンジニア</BodyText>
-          </div>
-        </FlexBox>
-        <div className={styles.alignItemsCenter}>
-          <Button size="small" color="lightGray" type="button">
-            編集する
-          </Button>
+          <BodyTextLarge color="darkGray" className={styles.xsMarginTop}>
+            {workHistory.department}
+          </BodyTextLarge>
         </div>
-      </div>
-      <BodyTextLarge color="darkGray" className={styles.xsMarginTop}>
-        大手広告のコンサルティングを担当
-      </BodyTextLarge>
-    </div>
+      ))}
+    </>
   );
 };
 

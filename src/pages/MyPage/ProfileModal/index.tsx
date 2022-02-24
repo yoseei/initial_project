@@ -82,8 +82,6 @@ const ProfileModal: FC<ProfileModalProps> = ({
     setPreviewImage(imageUrl);
   };
 
-  console.log(previewImage);
-  console.log(profileData);
   return (
     <div className={classNames(styles.rightInTheMiddle, styles.profileModal)}>
       <SectionTitle className={styles.textCenter}>プロフィール</SectionTitle>

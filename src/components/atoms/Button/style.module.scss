@@ -1,17 +1,19 @@
-@import "../../../assets/modules";
+@import "src/assets/modules";
 
-.root {
-  width: 100%;
-  text-align: center;
-  border-radius: $radius-xs;
-  padding: $space-xs $space-s;
-}
+  .button {
+    width: 100%;
+    text-align: center;
+    border-radius: $radius-xs;
+    padding: $space-xs $space-s;
+
+  }
 
 //----Props Css-----//
 .primary {
   color: $white;
   background: $primary-color;
 }
+
 .darkGray {
   color: $dark-gray;
   border: 1px solid $dark-gray;
@@ -39,4 +41,9 @@
 
 .small {
   font-size: $f-size-label;
+}
+
+.flex {
+  display: flex;
+  gap: 4px;
 }

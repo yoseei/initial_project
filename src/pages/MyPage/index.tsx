@@ -1,4 +1,4 @@
-import { useState, VFC } from "react";
+import { useEffect, useState, VFC } from "react";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import styles from "./style.module.scss";
 import MyPageTop from "pages/MyPage/History/MyPageTop";
@@ -8,6 +8,8 @@ import classNames from "classnames";
 import FlexBox from "components/atoms/FlexBox";
 import ProfileModal from "pages/MyPage/ProfileModal";
 import WorkHistoryModal from "pages/MyPage/WorkHistoryModal";
+import { HttpClient } from "lib/axios";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 
 export type ProfileFormData = {
   lastName: string;
@@ -20,19 +22,46 @@ export type ProfileFormData = {
 };
 
 export type WorkHistoryFormData = {
-  companyName: string;
+  name: string;
   position: string;
   sinceDate: string;
   untilDate: string;
-  biography: string;
+  isEmployed: boolean;
+  department: string;
+};
+
+export type WorkHistoryData = {
+  id: string;
+  name: string;
+  position: string;
+  sinceDate: string;
+  untilDate: string;
+  isEmployed: boolean;
+  department: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 const MyPage: VFC = () => {
   const [profileData, setProfileData] = useState<ProfileFormData>();
-  const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryFormData>();
+  const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[]>();
   const [isModal, setIsModal] = useState<boolean>(true);
   const [isWorkHistoryModal, setIsWorkHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
+  const { account } = useCurrentAccount();
+
+  useEffect(() => {
+    (async () => {
+      if (account) {
+        const res = await HttpClient.request({
+          method: "GET",
+          url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
+          headers: { ContentType: "application/json" },
+        });
+        setWorkHistoryData(res.data.workHistories);
+      }
+    })();
+  }, [account?.id, isWorkHistoryModal]);
 
   return (
     <>
@@ -56,6 +85,7 @@ const MyPage: VFC = () => {
             className={classNames(styles.mdMarginTop, styles.lgMarginBottom)}
             setIsWorkHistoryModal={setIsWorkHistoryModal}
             isWorkHistoryModal={isWorkHistoryModal}
+            workHistoryData={workHistoryData}
           />
           <History
             historyType="学歴"
@@ -83,7 +113,6 @@ const MyPage: VFC = () => {
           <WorkHistoryModal
             setIsWorkHistoryModal={setIsWorkHistoryModal}
             isWorkHistoryModal={isWorkHistoryModal}
-            setWorkHistoryData={setWorkHistoryData}
           />
         </>
       ) : (
