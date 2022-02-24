@@ -98,7 +98,7 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
               キャンセル
             </Button>
             <Button color="primary" type="submit" size="small">
-              更新
+              作成
             </Button>
           </FlexBox>
         </FlexBox>

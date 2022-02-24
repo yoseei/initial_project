@@ -9,7 +9,7 @@ type HistoryProps = {
   historyType: "職歴" | "学歴";
   className?: string;
   setIsWorkHistoryModal?: any;
-  isWorkHistoryModal?: boolean;
+  isWorkHistoryModal: boolean;
   workHistoryData?: WorkHistoryData[];
 };
 const History: FC<HistoryProps> = ({
@@ -22,7 +22,11 @@ const History: FC<HistoryProps> = ({
   return (
     <div className={className}>
       <SectionTitle className={styles.mdMarginBottom}>{historyType}</SectionTitle>
-      <HistoryRow workHistoryData={workHistoryData} />
+      <HistoryRow
+        workHistoryData={workHistoryData}
+        isWorkHistoryModal={isWorkHistoryModal}
+        setIsWorkHistoryModal={setIsWorkHistoryModal}
+      />
       <Button
         color="lightGray"
         type="button"
