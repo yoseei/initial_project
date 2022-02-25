@@ -2,7 +2,7 @@ import React, { VFC } from "react";
 import classNames from "classnames";
 import styles from "./style.module.scss";
 type UploadIconProps = {
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name?: string;
 };
 const UploadIcon: VFC<UploadIconProps> = ({ onChange, name }) => {

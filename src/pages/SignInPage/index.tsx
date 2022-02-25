@@ -36,17 +36,9 @@ const SignInPage: VFC = () => {
   const { refetchAccount } = useCurrentAccount();
 
   const onSubmit = handleSubmit(async (params) => {
-    const res = await HttpClient.post<SignInResponse>(
-      `${APIBaseUrl.AUTH}/sign_in`,
-      {
-        account: params,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await HttpClient.post<SignInResponse>(`${APIBaseUrl.AUTH}/sign_in`, {
+      account: params,
+    });
     if (!res.data.token) return;
     localStorage.setItem(PersistenceKeys.TOKEN, res.data.token);
     await refetchAccount();

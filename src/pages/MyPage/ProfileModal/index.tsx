@@ -33,7 +33,6 @@ const ProfileModal: FC<ProfileModalProps> = ({
     formState: { errors },
   } = useForm<ProfileFormData>();
   const [image, setImage] = useState<File>();
-  const [previewImage, setPreviewImage] = useState<string>();
   const { account } = useCurrentAccount();
 
   const closeModal = () => {
@@ -49,9 +48,7 @@ const ProfileModal: FC<ProfileModalProps> = ({
       fData.append("account[avatar]", image);
     }
 
-    Object.entries(data).map(([key, value]) => fData.append(`account[${key}]`, value));
-
-    const resAvatar = await HttpClient.request<Account>({
+    await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,
       data: fData,
@@ -69,17 +66,9 @@ const ProfileModal: FC<ProfileModalProps> = ({
       },
     });
 
-    setPreviewImage(resAvatar.data.avatarUrl);
     setProfileData(resProfileData.data);
     setIsModal(!isModal);
     reset();
-  };
-
-  const processImage = (event: any) => {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImage(imageFile);
-    setPreviewImage(imageUrl);
   };
 
   return (
@@ -87,19 +76,11 @@ const ProfileModal: FC<ProfileModalProps> = ({
       <SectionTitle className={styles.textCenter}>プロフィール</SectionTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.avatarWrapper}>
-          {profileData?.avatarUrl ? (
-            <ProfileImage
-              className={styles.horizontalCenter}
-              onChange={processImage}
-              src={profileData.avatarUrl}
-            />
-          ) : (
-            <ProfileImage
-              className={styles.horizontalCenter}
-              onChange={processImage}
-              src={previewImage}
-            />
-          )}
+          <ProfileImage
+            className={styles.horizontalCenter}
+            setImage={setImage}
+            avatarImage={profileData?.avatarUrl}
+          />
         </div>
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
           <InputGroup
@@ -112,12 +93,6 @@ const ProfileModal: FC<ProfileModalProps> = ({
             {...register("firstName", { required: true })}
           />
         </FlexBox>
-        <InputGroup
-          defaultValue={profileData?.address}
-          text="住まい"
-          className={styles.smMarginBottom}
-          {...register("address")}
-        />
 
         <div className={styles.smMarginBottom}>
           <BodyTextSmall color="darkGray">性別</BodyTextSmall>

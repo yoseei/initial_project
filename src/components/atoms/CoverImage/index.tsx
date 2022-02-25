@@ -5,7 +5,7 @@ import UploadIcon from "components/atoms/ProfileImage/UploadIcon";
 
 type CoverImageProps = {
   className?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement> | undefined) => void;
 };
 const CoverImage: VFC<CoverImageProps> = ({ className, onChange }) => {
   return (

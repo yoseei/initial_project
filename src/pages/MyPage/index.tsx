@@ -18,7 +18,6 @@ import "antd/dist/antd.css";
 export type ProfileFormData = {
   lastName: string;
   firstName: string;
-  address: string;
   gender: string;
   date: string;
   avatarUrl: string;
