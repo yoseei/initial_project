@@ -13,6 +13,7 @@ import { BodyText, BodyTextLarge, BodyTextSmall, SectionTitle } from "components
 import { Button as AntButton } from "antd";
 import Button from "components/atoms/Button";
 import { SubmitHandler } from "react-hook-form";
+import "antd/dist/antd.css";
 
 export type ProfileFormData = {
   lastName: string;
@@ -47,7 +48,7 @@ export type WorkHistoryData = {
 
 const MyPage: VFC = () => {
   const [profileData, setProfileData] = useState<ProfileFormData>();
-  const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[]>();
+  const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[] | undefined>();
   const [mappedWorkHistory, setMappedWorkHistory] = useState<WorkHistoryData>();
   const [isModal, setIsModal] = useState<boolean>(true);
   const [isEditWorkHistoryModal, setIsEditWorkHistoryModal] = useState<boolean>(false);
@@ -66,7 +67,7 @@ const MyPage: VFC = () => {
         setWorkHistoryData(res.data.workHistories);
       }
     })();
-  }, [account?.id, isEditWorkHistoryModal, isCreateWorkHistoryModal]);
+  }, [account?.id, isCreateWorkHistoryModal]);
 
   const openEditWorkHistoryModal = (workHistory: WorkHistoryData) => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
@@ -84,8 +85,8 @@ const MyPage: VFC = () => {
     setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
   };
 
-  const editWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
-    await HttpClient.request<WorkHistoryFormData>({
+  const editWorkHistory: SubmitHandler<WorkHistoryData> = async (data) => {
+    const res = await HttpClient.request<WorkHistoryData>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
       data: { work_history: data },
@@ -93,6 +94,12 @@ const MyPage: VFC = () => {
         "Content-type": "application/json",
       },
     });
+    const newWorkHistories = workHistoryData?.map((workHistory) => {
+      if (workHistory.id === res.data.id) return res.data;
+      else return workHistory;
+    });
+    if (!newWorkHistories) return;
+    setWorkHistoryData(newWorkHistories);
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
 
@@ -205,10 +212,7 @@ const MyPage: VFC = () => {
       {isCreateWorkHistoryModal && (
         <>
           <div className={styles.overLay} />
-          <WorkHistoryModal
-            cancel={closeCreateWorkHistoryModal}
-            onSubmit={createWorkHistory}
-          />
+          <WorkHistoryModal cancel={closeCreateWorkHistoryModal} onSubmit={createWorkHistory} />
         </>
       )}
     </>

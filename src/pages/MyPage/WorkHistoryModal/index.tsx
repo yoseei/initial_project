@@ -22,7 +22,7 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
   deleteWorkHistory,
   cancel,
 }) => {
-  const { register, handleSubmit } = useForm<WorkHistoryFormData>();
+  const { register, handleSubmit } = useForm<WorkHistoryData>();
 
   return (
     <>
