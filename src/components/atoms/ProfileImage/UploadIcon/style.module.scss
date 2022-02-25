@@ -1,0 +1,9 @@
+@import "src/assets/modules";
+
+.uploadIcon {
+  background-image: url("../../Images/Vector.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: $uploadIcon_size;
+  height: $uploadIcon_size;
+}

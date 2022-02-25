@@ -2,18 +2,20 @@ import { VFC } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { HttpClient } from "lib/axios";
-import { APIHost } from "constants/APIHost";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import Button from "components/atoms/Button";
-import Input from "components/atoms/Input";
+import Input from "components/atoms/InputGroup";
 import { Label, PageTitle } from "components/atoms/Text";
 import { EyeOutlined } from "@ant-design/icons";
 import styles from "./style.module.scss";
 import classNames from "classnames";
 import Sidebar from "components/molecules/Sidebar";
 import FlexBox from "components/atoms/FlexBox";
+import { Link, useNavigate } from "react-router-dom";
+import { routes } from "constants/routes";
 
 type SignUpFormData = {
   email: string;
@@ -33,16 +35,19 @@ const SignUpPage: VFC = () => {
   } = useForm<SignUpFormData>();
 
   const { refetchAccount } = useCurrentAccount();
+  const navigate = useNavigate();
 
-  const onSubmit = handleSubmit(async (prams) => {
+  const onSubmit = handleSubmit(async (params) => {
     const res = await HttpClient.request<SignUpResponse>({
       method: "POST",
-      url: `${APIHost.AUTH}/sign_in`,
+      url: `${APIBaseUrl.AUTH}/sign_up`,
+      data: { account: { ...params } },
     });
     if (!res.data.token) return;
 
     localStorage.setItem(PersistenceKeys.TOKEN, res.data.token);
     await refetchAccount();
+    navigate(routes.myPage());
   });
 
   return (
@@ -57,11 +62,6 @@ const SignUpPage: VFC = () => {
           </PageTitle>
           <form onSubmit={onSubmit}>
             <div className={styles.xxlMarginBottom}>
-              <div className={styles.xsMarginBottom}>
-                <Label color="darkGray" className={styles.xsMarginBottom}>
-                  メールアドレス
-                </Label>
-              </div>
               <Input
                 {...register("email", {
                   required: "メールアドレスは必須です",
@@ -72,6 +72,7 @@ const SignUpPage: VFC = () => {
                 })}
                 placeholder={"test@test.com"}
                 icon={""}
+                text="メールアドレス"
               />
               <ErrorMessage
                 errors={errors}
@@ -80,19 +81,18 @@ const SignUpPage: VFC = () => {
               />
             </div>
             <div className={styles.lgMarginBottom}>
-              <div className={styles.xsMarginBottom}>
-                <Label color="darkGray">パスワード</Label>
-              </div>
               <Input
                 {...register("password", {
                   required: "パスワードは必須です",
-                  pattern: {
-                    value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
-                    message:
-                      "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
-                  },
+                  // pattern: {
+                  //   value: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])\w{6,12}\z/,
+                  //   message:
+                  //     "パスワードは半角6~12文字英大文字・小文字・数字それぞれ１文字以上含む必要があります",
+                  // },
                 })}
+                type="password"
                 icon={<EyeOutlined />}
+                text="パスワード"
               />
               <ErrorMessage
                 errors={errors}
@@ -112,7 +112,7 @@ const SignUpPage: VFC = () => {
               color="darkGray"
               className={classNames(styles.lgMarginBottom, styles.sPadding)}
             >
-              ログインはこちら
+              <Link to="/sign_in">ログインはこちら</Link>
             </Button>
           </form>
         </div>

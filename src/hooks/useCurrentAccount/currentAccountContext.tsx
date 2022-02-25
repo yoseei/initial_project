@@ -1,48 +1,50 @@
-import { createContext, FC, useEffect, useState } from "react";
+import { createContext, FC, useCallback, useEffect, useState } from "react";
 import { Account } from "data/account";
 import { HttpClient } from "lib/axios";
-import { APIHost } from "constants/APIHost";
+import { APIBaseUrl } from "constants/apiBaseUrl";
 import PersistenceKeys from "constants/persistenceKeys";
 
 type CurrentAccountContext = {
   account?: Account;
   isLoggedIn: boolean;
   setAccount: (account?: Account) => void;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  fetchMe: () => Promise<void>;
 };
 
-export const currentAccountContext = createContext<CurrentAccountContext>({
-  account: undefined,
-  isLoggedIn: !!localStorage.getItem(PersistenceKeys.TOKEN),
-  setAccount: () => undefined,
-  setIsLoggedIn: () => undefined,
-});
+export const currentAccountContext = createContext<CurrentAccountContext>(
+  {} as CurrentAccountContext
+);
 
 const CurrentAccountProvider: FC = ({ children }) => {
   const [account, setAccount] = useState<Account>();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem(PersistenceKeys.TOKEN));
+  const token = localStorage.getItem(PersistenceKeys.TOKEN);
+
+  const fetchMe = useCallback(async () => {
+    // console.log("fetchMe", token);
+    if (!token) return;
+
+    const [, p] = token.split(".");
+    const payload = JSON.parse(atob(p));
+    const accountId = payload.sub;
+
+    if (typeof accountId !== "string") throw new Error("不正なtokenです");
+
+    await HttpClient.get<Account>(`${APIBaseUrl.APP}/accounts/${accountId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      setAccount(res.data);
+    });
+  }, [token, setAccount]);
 
   useEffect(() => {
-    (async () => {
-      const token = localStorage.getItem(PersistenceKeys.TOKEN);
-      if (!token) return;
+    fetchMe();
+  }, [fetchMe]);
+  // console.log("isLoggedIn", !!token);
 
-      const [, p] = token.split(".");
-      const payload = JSON.parse(atob(p));
-      const accountId = payload.sub;
-
-      if (typeof accountId !== "string") throw new Error("不正なtokenです");
-
-      await HttpClient.request<Account>({
-        method: "GET",
-        url: `${APIHost.APP}/accounts/${accountId}`,
-      }).then((res) => {
-        setAccount(res.data);
-      });
-    })();
-  }, []);
   return (
-    <currentAccountContext.Provider value={{ account, isLoggedIn, setAccount, setIsLoggedIn }}>
+    <currentAccountContext.Provider value={{ account, isLoggedIn: !!token, setAccount, fetchMe }}>
       {children}
     </currentAccountContext.Provider>
   );

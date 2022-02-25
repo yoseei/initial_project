@@ -7,13 +7,25 @@ import { SectionTitle } from "components/atoms/Text";
 type HistoryProps = {
   historyType: "職歴" | "学歴";
   className?: string;
+  setIsWorkHistoryModal?: any;
+  isWorkHistoryModal?: boolean;
 };
-const History: FC<HistoryProps> = ({ historyType, className }) => {
+const History: FC<HistoryProps> = ({
+  historyType,
+  className,
+  setIsWorkHistoryModal,
+  isWorkHistoryModal,
+}) => {
   return (
     <div className={className}>
       <SectionTitle className={styles.mdMarginBottom}>{historyType}</SectionTitle>
       <HistoryRow />
-      <Button color="lightGray" type="button" className={styles.mdMarginTop}>
+      <Button
+        color="lightGray"
+        type="button"
+        className={styles.mdMarginTop}
+        onClick={() => setIsWorkHistoryModal(true)}
+      >
         {`${historyType}を追加`}
       </Button>
     </div>

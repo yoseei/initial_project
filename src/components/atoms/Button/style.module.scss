@@ -5,6 +5,7 @@
   text-align: center;
   border-radius: $radius-xs;
   padding: $space-xs $space-s;
+  font-weight: bold;
 }
 
 //----Props Css-----//
@@ -27,6 +28,13 @@
   border: 1px solid $danger-color;
 }
 
+.black {
+  color: $black;
+  background: $light-gray;
+
+}
+
 .small {
   font-size: $f-size-label;
 }
+

@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.horizontalCenter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+}
+
 .rightInTheMiddle {
   position: absolute;
   top: 50%;

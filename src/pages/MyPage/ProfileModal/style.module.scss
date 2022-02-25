@@ -1,0 +1,30 @@
+@import "src/assets/modules";
+
+.profileModal {
+  width: $profileModal-width;
+  height: $profileModal-height;
+  //横のpaddingを38pxにしたい
+  padding: $space-md $space-lg + 8px;
+  background: $white;
+
+  .avatarWrapper {
+    position: relative;
+    margin-top: $space-md;
+    margin-bottom: $space-md;
+    height: $avatar-height;
+  }
+
+  .select {
+    display: block;
+    color: $black;
+    border: 1px solid $light-gray;
+    border-radius: $radius-sm;
+    padding: $space-s;
+    width: $selectBox-width;
+    appearance: auto;
+  }
+
+  .calender {
+    width: $calenderInput-width;
+  }
+}

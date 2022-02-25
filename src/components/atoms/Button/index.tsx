@@ -1,15 +1,16 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import classNames from "classnames";
 import styles from "components/atoms/Button/style.module.scss";
 
 type ButtonProps = {
   type: "button" | "submit";
-  color?: "primary" | "darkGray" | "lightGray" | "danger";
-  children: string;
+  color?: "primary" | "darkGray" | "lightGray" | "danger" | "black";
+  children: string | ReactNode;
   className?: string;
   size?: "small";
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
-const Button: FC<ButtonProps> = ({ type, color, children, className, size }) => {
+const Button: FC<ButtonProps> = ({ type, color, children, className, size, onClick }) => {
   return (
     <div>
       <button
@@ -21,8 +22,10 @@ const Button: FC<ButtonProps> = ({ type, color, children, className, size }) => 
           { [styles.darkGray]: color === "darkGray" },
           { [styles.lightGray]: color === "lightGray" },
           { [styles.danger]: color === "danger" },
+          { [styles.black]: color === "black" },
           { [styles.small]: size === "small" }
         )}
+        onClick={onClick}
       >
         {children}
       </button>
