@@ -1,4 +1,4 @@
-import { useEffect, useState, VFC } from "react";
+import React, { useEffect, useState, VFC } from "react";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import styles from "./style.module.scss";
 import MyPageTop from "pages/MyPage/History/MyPageTop";
@@ -10,6 +10,8 @@ import ProfileModal from "pages/MyPage/ProfileModal";
 import WorkHistoryModal from "pages/MyPage/WorkHistoryModal";
 import { HttpClient } from "lib/axios";
 import { APIBaseUrl } from "constants/apiBaseUrl";
+import { BodyText, BodyTextLarge, BodyTextSmall, SectionTitle } from "components/atoms/Text";
+import { Button as AntButton } from "antd";
 
 export type ProfileFormData = {
   lastName: string;
@@ -45,6 +47,7 @@ export type WorkHistoryData = {
 const MyPage: VFC = () => {
   const [profileData, setProfileData] = useState<ProfileFormData>();
   const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[]>();
+  const [mappedWorkHistory, setMappedWorkHistory] = useState<WorkHistoryData>();
   const [isModal, setIsModal] = useState<boolean>(true);
   const [isWorkHistoryModal, setIsWorkHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
@@ -63,6 +66,36 @@ const MyPage: VFC = () => {
     })();
   }, [account?.id, isWorkHistoryModal]);
 
+  const editWorkHistory = (workHistory: WorkHistoryData) => {
+    setIsWorkHistoryModal(!isWorkHistoryModal);
+    setMappedWorkHistory(workHistory);
+  };
+  const workHistory = workHistoryData?.map((workHistory) => (
+    <div className={styles.root} key={workHistory.id}>
+      <div className={styles.spaceBetween}>
+        <FlexBox>
+          <div className={classNames(styles.alignItemsCenter)}>
+            <BodyTextSmall color="darkGray" className={styles.smMarginRight}>
+              {workHistory.sinceDate} - {workHistory.untilDate}
+            </BodyTextSmall>
+          </div>
+          <div>
+            <BodyTextLarge bold className={styles.xsMarginBottom}>
+              {workHistory.name}
+            </BodyTextLarge>
+            <BodyText color="darkGray">{workHistory.position}</BodyText>
+          </div>
+        </FlexBox>
+        <div className={styles.alignItemsCenter}>
+          <AntButton onClick={() => editWorkHistory(workHistory)}>編集する</AntButton>
+        </div>
+      </div>
+      <BodyTextLarge color="darkGray" className={styles.xsMarginTop}>
+        {workHistory.department}
+      </BodyTextLarge>
+    </div>
+  ));
+
   return (
     <>
       <FlexBox>
@@ -80,13 +113,10 @@ const MyPage: VFC = () => {
             profileData={profileData}
             signOut={signOut}
           />
-          <History
-            historyType="職歴"
-            className={classNames(styles.mdMarginTop, styles.lgMarginBottom)}
-            setIsWorkHistoryModal={setIsWorkHistoryModal}
-            isWorkHistoryModal={isWorkHistoryModal}
-            workHistoryData={workHistoryData}
-          />
+          <>
+            <SectionTitle className={styles.mdMarginBottom}>職歴</SectionTitle>
+            {workHistory}
+          </>
           <History
             historyType="学歴"
             setIsWorkHistoryModal={setIsWorkHistoryModal}
@@ -113,6 +143,7 @@ const MyPage: VFC = () => {
           <WorkHistoryModal
             setIsWorkHistoryModal={setIsWorkHistoryModal}
             isWorkHistoryModal={isWorkHistoryModal}
+            mappedWorkHistory={mappedWorkHistory}
           />
         </>
       ) : (

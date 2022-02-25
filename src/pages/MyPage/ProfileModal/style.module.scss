@@ -6,6 +6,7 @@
   //横のpaddingを38pxにしたい
   padding: $space-md $space-lg + 8px;
   background: $white;
+  box-sizing: content-box;
 
   .avatarWrapper {
     position: relative;
