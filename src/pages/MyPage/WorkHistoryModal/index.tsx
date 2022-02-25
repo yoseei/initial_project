@@ -5,94 +5,50 @@ import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
 import FlexBox from "components/atoms/FlexBox";
 import InputGroup from "components/molecules/InputGroup";
 import Button from "components/atoms/Button";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { WorkHistoryData, WorkHistoryFormData } from "pages/MyPage/index";
 import { DeleteOutlined } from "@ant-design/icons";
-import { HttpClient } from "lib/axios";
-import { APIBaseUrl } from "constants/apiBaseUrl";
-import { useCurrentAccount } from "hooks/useCurrentAccount";
 
 type WorkHistoryModalProps = {
-  setIsWorkHistoryModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isWorkHistoryModal: boolean;
   mappedWorkHistory?: WorkHistoryData;
-  onEdit: string;
-  setOnEdit: React.Dispatch<React.SetStateAction<string>>;
+  onSubmit: any;
+  deleteWorkHistory?: any;
+  cancel: any;
 };
 
 const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
-  setIsWorkHistoryModal,
-  isWorkHistoryModal,
   mappedWorkHistory,
-  onEdit,
-  setOnEdit,
+  onSubmit,
+  deleteWorkHistory,
+  cancel,
 }) => {
-  const { register, handleSubmit, reset } = useForm<WorkHistoryFormData>();
-  const { account } = useCurrentAccount();
-  const createWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
-    await HttpClient.request<WorkHistoryFormData>({
-      method: "POST",
-      url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
-      data: { workHistory: data },
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    setIsWorkHistoryModal(!isWorkHistoryModal);
-    reset();
-  };
-
-  const editWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
-    await HttpClient.request<WorkHistoryFormData>({
-      method: "PATCH",
-      url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
-      data: { work_history: data },
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    setOnEdit("no");
-    setIsWorkHistoryModal(!isWorkHistoryModal);
-  };
-
-  const deleteWorkHistory = async () => {
-    await HttpClient.request({
-      method: "DELETE",
-      url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
-    });
-    setIsWorkHistoryModal(!isWorkHistoryModal);
-  };
-
-  const closeWorkHistoryModal = () => {
-    setIsWorkHistoryModal(!isWorkHistoryModal);
-    setOnEdit("no");
-  };
+  const { register, handleSubmit } = useForm<WorkHistoryFormData>();
 
   return (
     <>
-      {mappedWorkHistory && (
+      {mappedWorkHistory ? (
         <div className={classNames(styles.rightInTheMiddle, styles.workHistoryModal)}>
           <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
             職歴
           </SectionTitle>
-          <form onSubmit={handleSubmit(onEdit === "yes" ? editWorkHistory : createWorkHistory)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <InputGroup
               text="企業名"
               {...register("name", { required: true })}
               className={styles.smMarginBottom}
-              defaultValue={onEdit === "yes" ? mappedWorkHistory.name : ""}
+              defaultValue={mappedWorkHistory.name}
             />
             <InputGroup
               text="部署"
               className={styles.smMarginBottom}
               {...register("department", { required: true })}
-              defaultValue={onEdit === "yes" ? mappedWorkHistory.department : ""}
+              defaultValue={mappedWorkHistory.department}
             />
             <InputGroup
               text="役職"
               className={styles.smMarginBottom}
               {...register("position", { required: true })}
-              defaultValue={onEdit === "yes" ? mappedWorkHistory.position : ""}
+              defaultValue={mappedWorkHistory.position}
             />
 
             <FlexBox direction="column">
@@ -111,39 +67,94 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
                   type="date"
                   className={classNames(styles.smMarginBottom, styles.calender)}
                   {...register("sinceDate", { required: true })}
-                  defaultValue={onEdit === "yes" ? mappedWorkHistory.sinceDate : ""}
+                  defaultValue={mappedWorkHistory.sinceDate}
                 />
                 <InputGroup
                   type="date"
                   text=""
                   className={classNames(styles.calender)}
                   {...register("untilDate", { required: true })}
-                  defaultValue={onEdit === "yes" ? mappedWorkHistory.untilDate : ""}
+                  defaultValue={mappedWorkHistory.untilDate}
                 />
               </FlexBox>
             </FlexBox>
             <FlexBox justify="space-between">
-              {onEdit === "yes" ? (
-                <Button
-                  color="danger"
-                  type="button"
-                  icon={<DeleteOutlined />}
-                  size="small"
-                  flex
-                  onClick={deleteWorkHistory}
-                >
-                  削除する
-                </Button>
-              ) : (
-                ""
-              )}
+              <Button
+                color="danger"
+                type="button"
+                icon={<DeleteOutlined />}
+                size="small"
+                flex
+                onClick={deleteWorkHistory}
+              >
+                削除する
+              </Button>
 
               <FlexBox gap="xs" justify="end">
-                <Button color="white" type="button" onClick={closeWorkHistoryModal} size="small">
+                <Button color="white" type="button" onClick={cancel} size="small">
                   キャンセル
                 </Button>
                 <Button color="primary" type="submit" size="small">
-                  {onEdit === "yes" ? "更新" : "作成"}
+                  更新
+                </Button>
+              </FlexBox>
+            </FlexBox>
+          </form>
+        </div>
+      ) : (
+        <div className={classNames(styles.rightInTheMiddle, styles.workHistoryModal)}>
+          <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
+            職歴
+          </SectionTitle>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <InputGroup
+              text="企業名"
+              {...register("name", { required: true })}
+              className={styles.smMarginBottom}
+            />
+            <InputGroup
+              text="部署"
+              className={styles.smMarginBottom}
+              {...register("department", { required: true })}
+            />
+            <InputGroup
+              text="役職"
+              className={styles.smMarginBottom}
+              {...register("position", { required: true })}
+            />
+
+            <FlexBox direction="column">
+              <BodyTextSmall color="darkGray">入社期間</BodyTextSmall>
+              <FlexBox gap="xs">
+                <FlexBox align="middle" gap="xs">
+                  <input type="radio" id="employed" {...register("isEmployed")} value="true" />
+                  <label htmlFor="employed">在職中</label>
+
+                  <input type="radio" id="notEmployed" {...register("isEmployed")} value="false" />
+                  <label htmlFor="notEmployed">離職中</label>
+                </FlexBox>
+              </FlexBox>
+              <FlexBox gap="md">
+                <InputGroup
+                  type="date"
+                  className={classNames(styles.smMarginBottom, styles.calender)}
+                  {...register("sinceDate", { required: true })}
+                />
+                <InputGroup
+                  type="date"
+                  text=""
+                  className={classNames(styles.calender)}
+                  {...register("untilDate", { required: true })}
+                />
+              </FlexBox>
+            </FlexBox>
+            <FlexBox justify="space-between">
+              <FlexBox gap="xs" justify="end">
+                <Button color="white" type="button" onClick={cancel} size="small">
+                  キャンセル
+                </Button>
+                <Button color="primary" type="submit" size="small">
+                  作成
                 </Button>
               </FlexBox>
             </FlexBox>
