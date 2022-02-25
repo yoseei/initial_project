@@ -85,6 +85,18 @@ const MyPage: VFC = () => {
     setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
   };
 
+  const createWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
+    await HttpClient.request<WorkHistoryFormData>({
+      method: "POST",
+      url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
+      data: { workHistory: data },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
+  };
+
   const editWorkHistory: SubmitHandler<WorkHistoryData> = async (data) => {
     const res = await HttpClient.request<WorkHistoryData>({
       method: "PATCH",
@@ -103,23 +115,16 @@ const MyPage: VFC = () => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
 
-  const createWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
-    await HttpClient.request<WorkHistoryFormData>({
-      method: "POST",
-      url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
-      data: { workHistory: data },
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
-  };
-
-  const deleteWorkHistory = async () => {
+  const deleteWorkHistory = async (workHistory: WorkHistoryData) => {
     await HttpClient.request({
       method: "DELETE",
       url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
     });
+    const newWorkHistory = workHistoryData?.filter((filteredWorkHistory) => {
+      return filteredWorkHistory.id !== workHistory.id;
+    });
+
+    setWorkHistoryData(newWorkHistory);
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
 
@@ -199,21 +204,20 @@ const MyPage: VFC = () => {
         ""
       )}
       {isEditWorkHistoryModal && (
-        <>
-          <div className={styles.overLay} />
-          <WorkHistoryModal
-            mappedWorkHistory={mappedWorkHistory}
-            onSubmit={editWorkHistory}
-            deleteWorkHistory={deleteWorkHistory}
-            cancel={closeEditWorkHistoryModal}
-          />
-        </>
+        <WorkHistoryModal
+          mappedWorkHistory={mappedWorkHistory}
+          onSubmit={editWorkHistory}
+          deleteWorkHistory={deleteWorkHistory}
+          cancel={closeEditWorkHistoryModal}
+          visible={isEditWorkHistoryModal}
+        />
       )}
       {isCreateWorkHistoryModal && (
-        <>
-          <div className={styles.overLay} />
-          <WorkHistoryModal cancel={closeCreateWorkHistoryModal} onSubmit={createWorkHistory} />
-        </>
+          <WorkHistoryModal
+            cancel={closeCreateWorkHistoryModal}
+            onSubmit={createWorkHistory}
+            visible={isCreateWorkHistoryModal}
+          />
       )}
     </>
   );
