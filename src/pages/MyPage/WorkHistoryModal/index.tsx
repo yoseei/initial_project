@@ -16,16 +16,20 @@ type WorkHistoryModalProps = {
   setIsWorkHistoryModal: React.Dispatch<React.SetStateAction<boolean>>;
   isWorkHistoryModal: boolean;
   mappedWorkHistory?: WorkHistoryData;
+  onEdit: string;
+  setOnEdit: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
   setIsWorkHistoryModal,
   isWorkHistoryModal,
   mappedWorkHistory,
+  onEdit,
+  setOnEdit,
 }) => {
   const { register, handleSubmit, reset } = useForm<WorkHistoryFormData>();
   const { account } = useCurrentAccount();
-  const onSubmit: SubmitHandler<WorkHistoryFormData> = async (data) => {
+  const createWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
     await HttpClient.request<WorkHistoryFormData>({
       method: "POST",
       url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
@@ -38,6 +42,32 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
     reset();
   };
 
+  const editWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
+    await HttpClient.request<WorkHistoryFormData>({
+      method: "PATCH",
+      url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
+      data: { work_history: data },
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    setOnEdit("no");
+    setIsWorkHistoryModal(!isWorkHistoryModal);
+  };
+
+  const deleteWorkHistory = async () => {
+    await HttpClient.request({
+      method: "DELETE",
+      url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
+    });
+    setIsWorkHistoryModal(!isWorkHistoryModal);
+  };
+
+  const closeWorkHistoryModal = () => {
+    setIsWorkHistoryModal(!isWorkHistoryModal);
+    setOnEdit("no");
+  };
+
   return (
     <>
       {mappedWorkHistory && (
@@ -45,24 +75,24 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
           <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
             職歴
           </SectionTitle>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onEdit === "yes" ? editWorkHistory : createWorkHistory)}>
             <InputGroup
               text="企業名"
               {...register("name", { required: true })}
               className={styles.smMarginBottom}
-              defaultValue={mappedWorkHistory.name}
+              defaultValue={onEdit === "yes" ? mappedWorkHistory.name : ""}
             />
             <InputGroup
               text="部署"
               className={styles.smMarginBottom}
               {...register("department", { required: true })}
-              defaultValue={mappedWorkHistory.department}
+              defaultValue={onEdit === "yes" ? mappedWorkHistory.department : ""}
             />
             <InputGroup
               text="役職"
               className={styles.smMarginBottom}
               {...register("position", { required: true })}
-              defaultValue={mappedWorkHistory.position}
+              defaultValue={onEdit === "yes" ? mappedWorkHistory.position : ""}
             />
 
             <FlexBox direction="column">
@@ -81,33 +111,39 @@ const WorkHistoryModal: VFC<WorkHistoryModalProps> = ({
                   type="date"
                   className={classNames(styles.smMarginBottom, styles.calender)}
                   {...register("sinceDate", { required: true })}
-                  defaultValue={mappedWorkHistory.sinceDate}
+                  defaultValue={onEdit === "yes" ? mappedWorkHistory.sinceDate : ""}
                 />
                 <InputGroup
                   type="date"
                   text=""
                   className={classNames(styles.calender)}
                   {...register("untilDate", { required: true })}
-                  defaultValue={mappedWorkHistory.untilDate}
+                  defaultValue={onEdit === "yes" ? mappedWorkHistory.untilDate : ""}
                 />
               </FlexBox>
             </FlexBox>
             <FlexBox justify="space-between">
-              <Button color="danger" type="button" icon={<DeleteOutlined />} size="small" flex>
-                削除する
-              </Button>
+              {onEdit === "yes" ? (
+                <Button
+                  color="danger"
+                  type="button"
+                  icon={<DeleteOutlined />}
+                  size="small"
+                  flex
+                  onClick={deleteWorkHistory}
+                >
+                  削除する
+                </Button>
+              ) : (
+                ""
+              )}
 
               <FlexBox gap="xs" justify="end">
-                <Button
-                  color="white"
-                  type="button"
-                  onClick={() => setIsWorkHistoryModal(!isWorkHistoryModal)}
-                  size="small"
-                >
+                <Button color="white" type="button" onClick={closeWorkHistoryModal} size="small">
                   キャンセル
                 </Button>
                 <Button color="primary" type="submit" size="small">
-                  作成
+                  {onEdit === "yes" ? "更新" : "作成"}
                 </Button>
               </FlexBox>
             </FlexBox>

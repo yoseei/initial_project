@@ -12,6 +12,7 @@ import { HttpClient } from "lib/axios";
 import { APIBaseUrl } from "constants/apiBaseUrl";
 import { BodyText, BodyTextLarge, BodyTextSmall, SectionTitle } from "components/atoms/Text";
 import { Button as AntButton } from "antd";
+import Button from "components/atoms/Button";
 
 export type ProfileFormData = {
   lastName: string;
@@ -50,6 +51,7 @@ const MyPage: VFC = () => {
   const [mappedWorkHistory, setMappedWorkHistory] = useState<WorkHistoryData>();
   const [isModal, setIsModal] = useState<boolean>(true);
   const [isWorkHistoryModal, setIsWorkHistoryModal] = useState<boolean>(false);
+  const [onEdit, setOnEdit] = useState<string>("no");
   const { signOut } = useCurrentAccount();
   const { account } = useCurrentAccount();
 
@@ -66,9 +68,15 @@ const MyPage: VFC = () => {
     })();
   }, [account?.id, isWorkHistoryModal]);
 
-  const editWorkHistory = (workHistory: WorkHistoryData) => {
+  const openWorkHistoryModalEdit = (workHistory: WorkHistoryData) => {
     setIsWorkHistoryModal(!isWorkHistoryModal);
     setMappedWorkHistory(workHistory);
+    setOnEdit("yes");
+  };
+
+  const openWorkHistoryModalCreate = () => {
+    setIsWorkHistoryModal(true);
+    setOnEdit("no");
   };
   const workHistory = workHistoryData?.map((workHistory) => (
     <div className={styles.root} key={workHistory.id}>
@@ -87,7 +95,7 @@ const MyPage: VFC = () => {
           </div>
         </FlexBox>
         <div className={styles.alignItemsCenter}>
-          <AntButton onClick={() => editWorkHistory(workHistory)}>編集する</AntButton>
+          <AntButton onClick={() => openWorkHistoryModalEdit(workHistory)}>編集する</AntButton>
         </div>
       </div>
       <BodyTextLarge color="darkGray" className={styles.xsMarginTop}>
@@ -96,6 +104,7 @@ const MyPage: VFC = () => {
     </div>
   ));
 
+  console.log("mypage:", onEdit);
   return (
     <>
       <FlexBox>
@@ -116,6 +125,14 @@ const MyPage: VFC = () => {
           <>
             <SectionTitle className={styles.mdMarginBottom}>職歴</SectionTitle>
             {workHistory}
+            <Button
+              color="lightGray"
+              type="button"
+              className={styles.mdMarginTop}
+              onClick={openWorkHistoryModalCreate}
+            >
+              職歴を追加
+            </Button>
           </>
           <History
             historyType="学歴"
@@ -144,6 +161,8 @@ const MyPage: VFC = () => {
             setIsWorkHistoryModal={setIsWorkHistoryModal}
             isWorkHistoryModal={isWorkHistoryModal}
             mappedWorkHistory={mappedWorkHistory}
+            onEdit={onEdit}
+            setOnEdit={setOnEdit}
           />
         </>
       ) : (
