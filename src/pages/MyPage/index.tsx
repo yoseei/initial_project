@@ -1,7 +1,7 @@
 import React, { useEffect, useState, VFC } from "react";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import styles from "./style.module.scss";
-import MyPageTop from "pages/MyPage/History/MyPageTop";
+import MyPageTop from "pages/MyPage/MyPageTop";
 import Sidebar from "components/molecules/Sidebar";
 import classNames from "classnames";
 import FlexBox from "components/atoms/FlexBox";
@@ -13,7 +13,7 @@ import { BodyText, BodyTextLarge, BodyTextSmall, SectionTitle } from "components
 import { Button as AntButton } from "antd";
 import Button from "components/atoms/Button";
 import { SubmitHandler } from "react-hook-form";
-import "antd/dist/antd.css";
+import { Account } from "data/account";
 
 export type ProfileFormData = {
   lastName: string;
@@ -22,15 +22,6 @@ export type ProfileFormData = {
   date: string;
   avatarUrl: string;
   birthday: string;
-};
-
-export type WorkHistoryFormData = {
-  name: string;
-  position: string;
-  sinceDate: string;
-  untilDate: string;
-  isEmployed: boolean;
-  department: string;
 };
 
 export type WorkHistoryData = {
@@ -46,31 +37,35 @@ export type WorkHistoryData = {
 };
 
 const MyPage: VFC = () => {
-  const [profileData, setProfileData] = useState<ProfileFormData>();
-  const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[] | undefined>();
-  const [mappedWorkHistory, setMappedWorkHistory] = useState<WorkHistoryData>();
+  const { account } = useCurrentAccount();
+  const [profileData, setProfileData] = useState<Account | undefined>(account);
+  const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[]>();
+  const [workHistory, setWorkHistory] = useState<WorkHistoryData>();
   const [isModal, setIsModal] = useState<boolean>(true);
   const [isEditWorkHistoryModal, setIsEditWorkHistoryModal] = useState<boolean>(false);
   const [isCreateWorkHistoryModal, setIsCreateWorkHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
-  const { account } = useCurrentAccount();
+
+  const fetchWorkHistory = async () => {
+    if (account) {
+      const res = await HttpClient.request({
+        method: "GET",
+        url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
+        headers: { ContentType: "application/json" },
+      });
+      setWorkHistoryData(res.data.workHistories);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      if (account) {
-        const res = await HttpClient.request({
-          method: "GET",
-          url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
-          headers: { ContentType: "application/json" },
-        });
-        setWorkHistoryData(res.data.workHistories);
-      }
-    })();
-  }, [account?.id, isCreateWorkHistoryModal]);
+    if (!account) return;
+    setProfileData(account);
+    fetchWorkHistory();
+  }, [account?.id]);
 
   const openEditWorkHistoryModal = (workHistory: WorkHistoryData) => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
-    setMappedWorkHistory(workHistory);
+    setWorkHistory(workHistory);
   };
 
   const openCreateWorkHistoryModal = () => {
@@ -84,8 +79,8 @@ const MyPage: VFC = () => {
     setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
   };
 
-  const createWorkHistory: SubmitHandler<WorkHistoryFormData> = async (data) => {
-    await HttpClient.request<WorkHistoryFormData>({
+  const createWorkHistory: SubmitHandler<WorkHistoryData> = async (data) => {
+    const res = await HttpClient.request<WorkHistoryData>({
       method: "POST",
       url: `${APIBaseUrl.APP}/accounts/${account?.id}/work_histories`,
       data: { workHistory: data },
@@ -93,23 +88,27 @@ const MyPage: VFC = () => {
         "content-type": "application/json",
       },
     });
+    if (!workHistoryData) return;
+    setWorkHistoryData([...workHistoryData, res.data]);
     setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
   };
 
   const editWorkHistory: SubmitHandler<WorkHistoryData> = async (data) => {
     const res = await HttpClient.request<WorkHistoryData>({
       method: "PATCH",
-      url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
+      url: `${APIBaseUrl.APP}/work_histories/${workHistory?.id}`,
       data: { work_history: data },
       headers: {
         "Content-type": "application/json",
       },
     });
-    const newWorkHistories = workHistoryData?.map((workHistory) => {
+    if (!workHistoryData) return;
+
+    const newWorkHistories = workHistoryData.map((workHistory) => {
       if (workHistory.id === res.data.id) return res.data;
       else return workHistory;
     });
-    if (!newWorkHistories) return;
+
     setWorkHistoryData(newWorkHistories);
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
@@ -117,9 +116,11 @@ const MyPage: VFC = () => {
   const deleteWorkHistory = async (workHistory: WorkHistoryData) => {
     await HttpClient.request({
       method: "DELETE",
-      url: `${APIBaseUrl.APP}/work_histories/${mappedWorkHistory?.id}`,
+      url: `${APIBaseUrl.APP}/work_histories/${workHistory?.id}`,
     });
-    const newWorkHistory = workHistoryData?.filter((filteredWorkHistory) => {
+
+    if (!workHistoryData) return;
+    const newWorkHistory = workHistoryData.filter((filteredWorkHistory) => {
       return filteredWorkHistory.id !== workHistory.id;
     });
 
@@ -127,7 +128,7 @@ const MyPage: VFC = () => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
 
-  const workHistory = workHistoryData?.map((workHistory) => (
+  const workHistoryTables = workHistoryData?.map((workHistory) => (
     <div className={styles.root} key={workHistory.id}>
       <div className={styles.spaceBetween}>
         <FlexBox>
@@ -172,7 +173,7 @@ const MyPage: VFC = () => {
           />
           <>
             <SectionTitle className={styles.mdMarginBottom}>職歴</SectionTitle>
-            {workHistory}
+            {workHistoryTables}
             <Button
               color="lightGray"
               type="button"
@@ -182,11 +183,7 @@ const MyPage: VFC = () => {
               職歴を追加
             </Button>
           </>
-          {/*<History*/}
-          {/*  historyType="学歴"*/}
-          {/*  setIsWorkHistoryModal={setIsWorkHistoryModal}*/}
-          {/*  isWorkHistoryModal={isWorkHistoryModal}*/}
-          {/*/>*/}
+          // Todo: 上記職歴のように学歴を記述していく
         </FlexBox>
       </FlexBox>
       {isModal ? (
@@ -204,7 +201,7 @@ const MyPage: VFC = () => {
       )}
       {isEditWorkHistoryModal && (
         <WorkHistoryModal
-          mappedWorkHistory={mappedWorkHistory}
+          workHistory={workHistory}
           onSubmit={editWorkHistory}
           deleteWorkHistory={deleteWorkHistory}
           cancel={closeEditWorkHistoryModal}
@@ -212,11 +209,11 @@ const MyPage: VFC = () => {
         />
       )}
       {isCreateWorkHistoryModal && (
-          <WorkHistoryModal
-            cancel={closeCreateWorkHistoryModal}
-            onSubmit={createWorkHistory}
-            visible={isCreateWorkHistoryModal}
-          />
+        <WorkHistoryModal
+          cancel={closeCreateWorkHistoryModal}
+          onSubmit={createWorkHistory}
+          visible={isCreateWorkHistoryModal}
+        />
       )}
     </>
   );

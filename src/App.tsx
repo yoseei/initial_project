@@ -7,6 +7,7 @@ import SignUpPage from "pages/SignUpPage";
 import MyPage from "pages/MyPage";
 import PrivateRoute from "components/Route/PrivateRoute";
 import GeneralRoute from "components/Route/GeneralRoute";
+import "antd/dist/antd.css";
 
 function App() {
   return (

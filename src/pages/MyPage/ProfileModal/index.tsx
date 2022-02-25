@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import Button from "components/atoms/Button";
 import styles from "./style.module.scss";
-import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
+import { BodyTextSmall, Label, SectionTitle } from "components/atoms/Text";
 import FlexBox from "components/atoms/FlexBox";
 import classNames from "classnames";
 import ProfileImage from "components/atoms/ProfileImage";
@@ -12,12 +12,13 @@ import { APIBaseUrl } from "constants/apiBaseUrl";
 import { Account } from "data/account";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import InputGroup from "components/molecules/InputGroup";
+import { ErrorMessage } from "@hookform/error-message";
 
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   isModal: boolean;
-  setProfileData: React.Dispatch<React.SetStateAction<ProfileFormData | undefined>>;
-  profileData?: ProfileFormData;
+  setProfileData: React.Dispatch<React.SetStateAction<Account | undefined>>;
+  profileData?: Account;
 };
 
 const ProfileModal: FC<ProfileModalProps> = ({
@@ -57,7 +58,7 @@ const ProfileModal: FC<ProfileModalProps> = ({
       },
     });
 
-    const resProfileData = await HttpClient.request<ProfileFormData>({
+    const resProfileData = await HttpClient.request<Account>({
       method: "PATCH",
       url: `${APIBaseUrl.APP}/accounts/${account.id}`,
       data: { account: data },
@@ -82,12 +83,18 @@ const ProfileModal: FC<ProfileModalProps> = ({
             avatarImage={profileData?.avatarUrl}
           />
         </div>
+        <ErrorMessage
+          errors={errors}
+          name="lastName"
+          render={({ message }) => <Label color="danger">{message}</Label>}
+        />
         <FlexBox align="bottom" gap="lg" className={styles.smMarginBottom}>
           <InputGroup
             defaultValue={profileData?.lastName}
             text="名前"
-            {...register("lastName", { required: true })}
+            {...register("lastName", { required: "名前は必須です" })}
           />
+
           <InputGroup
             defaultValue={profileData?.firstName}
             {...register("firstName", { required: true })}
@@ -96,11 +103,16 @@ const ProfileModal: FC<ProfileModalProps> = ({
 
         <div className={styles.smMarginBottom}>
           <BodyTextSmall color="darkGray">性別</BodyTextSmall>
+          <ErrorMessage
+            errors={errors}
+            name="gender"
+            render={({ message }) => <Label color="danger">{message}</Label>}
+          />
           <select
             id="genderSelect"
             className={styles.select}
             defaultValue={profileData?.gender}
-            {...register("gender", { required: true })}
+            {...register("gender", { required: "性別は必須です" })}
           >
             <option value=""></option>
             <option value="male">male</option>
