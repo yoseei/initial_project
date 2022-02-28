@@ -14,6 +14,7 @@ import { Button as AntButton } from "antd";
 import Button from "components/atoms/Button";
 import { SubmitHandler } from "react-hook-form";
 import { Account } from "data/account";
+import AcademicHistoryModal from "pages/MyPage/AcademicHistoryModal";
 
 export type ProfileFormData = {
   lastName: string;
@@ -36,14 +37,29 @@ export type WorkHistoryData = {
   updatedAt: string;
 };
 
+export type AcademicHistoryData = {
+  id: string;
+  name: string;
+  faculty: string;
+  sinceDate: string;
+  untilDate: string;
+  type: string;
+  created_at: string;
+  updated_at: string;
+};
+
 const MyPage: VFC = () => {
   const { account } = useCurrentAccount();
   const [profileData, setProfileData] = useState<Account | undefined>(account);
   const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[]>();
+  const [academicHistoryData, setAcademicHistoryData] = useState<AcademicHistoryData[]>();
   const [workHistory, setWorkHistory] = useState<WorkHistoryData>();
+  const [academicHistory, setAcademicHistory] = useState<AcademicHistoryData>();
   const [isModal, setIsModal] = useState<boolean>(true);
   const [isEditWorkHistoryModal, setIsEditWorkHistoryModal] = useState<boolean>(false);
+  const [isEditAcademicHistoryModal, setIsEditAcademicHistoryModal] = useState<boolean>(false);
   const [isCreateWorkHistoryModal, setIsCreateWorkHistoryModal] = useState<boolean>(false);
+  const [isCreateAcademicHistoryModal, setIsCreateAcademicHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
 
   const fetchWorkHistory = async () => {
@@ -57,26 +73,50 @@ const MyPage: VFC = () => {
     }
   };
 
+  const fetchAcademicHistory = async () => {
+    if (account) {
+      const res = await HttpClient.request({
+        method: "GET",
+        url: `${APIBaseUrl.APP}/accounts/${account?.id}/academic_histories`,
+        headers: { ContentType: "application/json" },
+      });
+      setAcademicHistoryData(res.data.academicHistories);
+    }
+  };
+
   useEffect(() => {
     if (!account) return;
     setProfileData(account);
     fetchWorkHistory();
+    fetchAcademicHistory();
   }, [account?.id]);
 
   const openEditWorkHistoryModal = (workHistory: WorkHistoryData) => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
     setWorkHistory(workHistory);
   };
-
   const openCreateWorkHistoryModal = () => {
     setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
   };
-
   const closeEditWorkHistoryModal = () => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
   const closeCreateWorkHistoryModal = () => {
     setIsCreateWorkHistoryModal(!isCreateWorkHistoryModal);
+  };
+
+  const openEditAcademicHistoryModal = (academicHistory: AcademicHistoryData) => {
+    setIsEditAcademicHistoryModal(!isEditAcademicHistoryModal);
+    setAcademicHistory(academicHistory);
+  };
+  const openCreateAcademicHistoryModal = () => {
+    setIsCreateAcademicHistoryModal(!isCreateAcademicHistoryModal);
+  };
+  const closeEditAcademicHistoryModal = () => {
+    setIsEditAcademicHistoryModal(!isEditAcademicHistoryModal);
+  };
+  const closeCreateAcademicHistoryModal = () => {
+    setIsCreateAcademicHistoryModal(!isCreateAcademicHistoryModal);
   };
 
   const createWorkHistory: SubmitHandler<WorkHistoryData> = async (data) => {
@@ -128,6 +168,53 @@ const MyPage: VFC = () => {
     setIsEditWorkHistoryModal(!isEditWorkHistoryModal);
   };
 
+  const editAcademicHistory: SubmitHandler<AcademicHistoryData> = async (data) => {
+    const res = await HttpClient.request({
+      method: "PATCH",
+      url: `${APIBaseUrl.APP}/academic_histories/${academicHistory?.id}`,
+      data: { academic_history: data },
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!academicHistoryData) return;
+    const newAcademicHistories = academicHistoryData.map((academicHistory) => {
+      if (academicHistory.id === res.data.id) return res.data;
+      return academicHistory;
+    });
+    setAcademicHistoryData(newAcademicHistories);
+    setIsEditAcademicHistoryModal(!isEditAcademicHistoryModal);
+  };
+
+  const deleteAcademicHistory = async (academicHistory: AcademicHistoryData) => {
+    await HttpClient.request({
+      method: "DELETE",
+      url: `${APIBaseUrl.APP}/academic_histories/${academicHistory?.id}`,
+    });
+
+    if (!academicHistoryData) return;
+    const newAcademicHistories = academicHistoryData.filter((filteredAcademicHistory) => {
+      return filteredAcademicHistory.id !== academicHistory.id;
+    });
+    setAcademicHistoryData(newAcademicHistories);
+    setIsEditAcademicHistoryModal(!isEditAcademicHistoryModal);
+  };
+
+  const createAcademicHistory: SubmitHandler<AcademicHistoryData> = async (data) => {
+    const res = await HttpClient.request<AcademicHistoryData>({
+      method: "POST",
+      url: `${APIBaseUrl.APP}/accounts/${account?.id}/academic_histories`,
+      data: { academicHistory: data },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (!academicHistoryData) return;
+    setAcademicHistoryData([...academicHistoryData, res.data]);
+    setIsCreateAcademicHistoryModal(!isCreateAcademicHistoryModal);
+  };
+
   const workHistoryTables = workHistoryData?.map((workHistory) => (
     <div className={styles.root} key={workHistory.id}>
       <div className={styles.spaceBetween}>
@@ -154,6 +241,31 @@ const MyPage: VFC = () => {
     </div>
   ));
 
+  const academicHistoryTables = academicHistoryData?.map((academicHistory) => (
+    <div className={styles.root} key={academicHistory.id}>
+      <div className={styles.spaceBetween}>
+        <FlexBox>
+          <div className={classNames(styles.alignItemsCenter)}>
+            <BodyTextSmall color="darkGray" className={styles.smMarginRight}>
+              {academicHistory.sinceDate} - {academicHistory.untilDate}
+            </BodyTextSmall>
+          </div>
+          <div>
+            <BodyTextLarge bold className={styles.xsMarginBottom}>
+              {academicHistory.name}
+            </BodyTextLarge>
+            <BodyText color="darkGray">{academicHistory.faculty}</BodyText>
+          </div>
+        </FlexBox>
+        <div className={styles.alignItemsCenter}>
+          <AntButton onClick={() => openEditAcademicHistoryModal(academicHistory)}>
+            編集する
+          </AntButton>
+        </div>
+      </div>
+    </div>
+  ));
+
   return (
     <>
       <FlexBox>
@@ -171,7 +283,7 @@ const MyPage: VFC = () => {
             profileData={profileData}
             signOut={signOut}
           />
-          <>
+          <div className={styles.lgMarginTop}>
             <SectionTitle className={styles.mdMarginBottom}>職歴</SectionTitle>
             {workHistoryTables}
             <Button
@@ -182,8 +294,20 @@ const MyPage: VFC = () => {
             >
               職歴を追加
             </Button>
-          </>
-          // Todo: 上記職歴のように学歴を記述していく
+          </div>
+
+          <div className={styles.lgMarginTop}>
+            <SectionTitle className={styles.mdMarginBottom}>学歴</SectionTitle>
+            {academicHistoryTables}
+            <Button
+              color="lightGray"
+              type="button"
+              className={styles.mdMarginTop}
+              onClick={openCreateAcademicHistoryModal}
+            >
+              学歴を追加
+            </Button>
+          </div>
         </FlexBox>
       </FlexBox>
       {isModal ? (
@@ -213,6 +337,22 @@ const MyPage: VFC = () => {
           cancel={closeCreateWorkHistoryModal}
           onSubmit={createWorkHistory}
           visible={isCreateWorkHistoryModal}
+        />
+      )}
+      {isEditAcademicHistoryModal && (
+        <AcademicHistoryModal
+          academicHistory={academicHistory}
+          onSubmit={editAcademicHistory}
+          deleteAcademicHistory={deleteAcademicHistory}
+          cancel={closeEditAcademicHistoryModal}
+          visible={isEditAcademicHistoryModal}
+        />
+      )}
+      {isCreateAcademicHistoryModal && (
+        <AcademicHistoryModal
+          cancel={closeCreateAcademicHistoryModal}
+          onSubmit={createAcademicHistory}
+          visible={isCreateAcademicHistoryModal}
         />
       )}
     </>
