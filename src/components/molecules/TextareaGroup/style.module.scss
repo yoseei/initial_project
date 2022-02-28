@@ -1,0 +1,9 @@
+@import "src/assets/modules";
+
+.textArea {
+  width: 100%;
+  color: $black;
+  border: 1px solid $light-gray;
+  border-radius: $radius-sm;
+  padding: $space-s;
+}

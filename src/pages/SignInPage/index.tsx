@@ -7,7 +7,6 @@ import { Account } from "data/account";
 import PersistenceKeys from "constants/persistenceKeys";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import Button from "components/atoms/Button";
-import Input from "components/atoms/InputGroup";
 import { Label, PageTitle } from "components/atoms/Text";
 import { EyeOutlined } from "@ant-design/icons";
 import styles from "./style.module.scss";
@@ -15,6 +14,7 @@ import classNames from "classnames";
 import Sidebar from "components/molecules/Sidebar";
 import FlexBox from "components/atoms/FlexBox";
 import { Link } from "react-router-dom";
+import InputGroup from "components/molecules/InputGroup";
 
 type SignInFormData = {
   email: string;
@@ -56,7 +56,7 @@ const SignInPage: VFC = () => {
           </PageTitle>
           <form onSubmit={onSubmit}>
             <div className={styles.xxlMarginBottom}>
-              <Input
+              <InputGroup
                 {...register("email", {
                   required: "メールアドレスは必須です",
                   pattern: {
@@ -74,7 +74,7 @@ const SignInPage: VFC = () => {
               />
             </div>
             <div className={styles.lgMarginBottom}>
-              <Input
+              <InputGroup
                 {...register("password", {
                   required: "パスワードは必須です",
                   // pattern: {

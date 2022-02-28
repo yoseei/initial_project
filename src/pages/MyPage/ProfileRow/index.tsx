@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { BodyText } from "components/atoms/Text";
-import styles from "pages/MyPage/History/ProfileRow/style.module.scss";
+import styles from "pages/MyPage/ProfileRow/style.module.scss";
 import FlexBox from "components/atoms/FlexBox";
 
 type ProfileRowProps = {
