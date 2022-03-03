@@ -17,7 +17,7 @@ import { ErrorMessage } from "@hookform/error-message";
 type ProfileModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   isModal: boolean;
-  setProfileData: React.Dispatch<React.SetStateAction<Account | undefined>>;
+  setProfileData: (account?: Account) => void;
   profileData?: Account;
 };
 

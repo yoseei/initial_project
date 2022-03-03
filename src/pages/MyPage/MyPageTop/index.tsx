@@ -3,10 +3,8 @@ import ProfileRow from "pages/MyPage/ProfileRow";
 import { BodyTextSmall, SectionTitle } from "components/atoms/Text";
 import Button from "components/atoms/Button";
 import styles from "pages/MyPage/MyPageTop/style.module.scss";
-import ProfileImage from "components/atoms/ProfileImage";
 import classNames from "classnames";
 import FlexBox from "components/atoms/FlexBox";
-import { ProfileFormData } from "pages/MyPage/index";
 import Avatar from "pages/MyPage/Avatar";
 import { Account } from "data/account";
 
