@@ -62,6 +62,7 @@ const MyPage: VFC = () => {
   const [isCreateAcademicHistoryModal, setIsCreateAcademicHistoryModal] = useState<boolean>(false);
   const { signOut } = useCurrentAccount();
 
+  console.log(account);
   const fetchWorkHistory = async () => {
     if (account) {
       const res = await HttpClient.request({
