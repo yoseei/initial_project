@@ -35,136 +35,81 @@ const AcademicHistoryModal: VFC<AcademicHistoryModalProps> = ({
   return (
     <>
       <Modal closable={false} footer={null} onCancel={cancel} visible={visible} centered={true}>
-        {academicHistory ? (
-          <div className={classNames(styles.rightInTheMiddle, styles.academicHistoryModal)}>
-            <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
-              学歴
-            </SectionTitle>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <ErrorMessage
-                errors={errors}
-                name="name"
-                render={({ message }) => <Label color="danger">{message}</Label>}
-              />
-              <InputGroup
-                text="学校名"
-                {...register("name", { required: "学校名は必須です" })}
-                className={styles.smMarginBottom}
-                defaultValue={academicHistory.name}
-              />
-              <ErrorMessage
-                errors={errors}
-                name="faculty"
-                render={({ message }) => <Label color="danger">{message}</Label>}
-              />
-              <InputGroup
-                text="学部・学科"
-                className={styles.smMarginBottom}
-                {...register("faculty", { required: "学部・学科は必須です" })}
-                defaultValue={academicHistory.faculty}
-              />
-              <ErrorMessage
-                errors={errors}
-                name="position"
-                render={({ message }) => <Label color="danger">{message}</Label>}
-              />
+        <div className={classNames(styles.rightInTheMiddle, styles.academicHistoryModal)}>
+          <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
+            学歴
+          </SectionTitle>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ErrorMessage
+              errors={errors}
+              name="name"
+              render={({ message }) => <Label color="danger">{message}</Label>}
+            />
+            <InputGroup
+              text="学校名"
+              {...register("name", { required: "学校名は必須です" })}
+              className={styles.smMarginBottom}
+              defaultValue={academicHistory?.name}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="faculty"
+              render={({ message }) => <Label color="danger">{message}</Label>}
+            />
+            <InputGroup
+              text="学部・学科"
+              className={styles.smMarginBottom}
+              {...register("faculty", { required: "学部・学科は必須です" })}
+              defaultValue={academicHistory?.faculty}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="position"
+              render={({ message }) => <Label color="danger">{message}</Label>}
+            />
 
-              <FlexBox direction="column">
-                <BodyTextSmall color="darkGray">入学期間</BodyTextSmall>
-                <FlexBox gap="md">
-                  <InputGroup
-                    type="date"
-                    className={classNames(styles.smMarginBottom, styles.calender)}
-                    {...register("sinceDate", { required: true })}
-                    defaultValue={academicHistory.sinceDate}
-                  />
-                  <InputGroup
-                    type="date"
-                    className={classNames(styles.calender)}
-                    {...register("untilDate", { required: true })}
-                    defaultValue={academicHistory.untilDate}
-                  />
-                </FlexBox>
+            <FlexBox direction="column">
+              <BodyTextSmall color="darkGray">入学期間</BodyTextSmall>
+              <FlexBox gap="md">
+                <InputGroup
+                  type="date"
+                  className={classNames(styles.smMarginBottom, styles.calender)}
+                  {...register("sinceDate", { required: true })}
+                  defaultValue={academicHistory?.sinceDate}
+                />
+                <InputGroup
+                  type="date"
+                  className={classNames(styles.calender)}
+                  {...register("untilDate", { required: true })}
+                  defaultValue={academicHistory?.untilDate}
+                />
               </FlexBox>
-              <FlexBox justify="space-between">
-                <Button
-                  color="danger"
-                  type="button"
-                  icon={<DeleteOutlined />}
-                  size="small"
-                  flex
-                  onClick={() => deleteAcademicHistory && deleteAcademicHistory(academicHistory)}
-                >
-                  削除する
+            </FlexBox>
+            <FlexBox justify="space-between">
+              <Button
+                color="danger"
+                type="button"
+                icon={<DeleteOutlined />}
+                size="small"
+                flex
+                onClick={() =>
+                  deleteAcademicHistory && academicHistory && deleteAcademicHistory(academicHistory)
+                }
+              >
+                削除する
+              </Button>
+
+              <FlexBox gap="xs" justify="end">
+                <Button color="white" type="button" onClick={cancel} size="small">
+                  キャンセル
                 </Button>
-
-                <FlexBox gap="xs" justify="end">
-                  <Button color="white" type="button" onClick={cancel} size="small">
-                    キャンセル
-                  </Button>
-                  <Button color="primary" type="submit" size="small">
-                    更新
-                  </Button>
-                </FlexBox>
+                <Button color="primary" type="submit" size="small">
+                  更新
+                </Button>
               </FlexBox>
-            </form>
-          </div>
-        ) : (
-          <div className={classNames(styles.rightInTheMiddle, styles.academicHistoryModal)}>
-            <SectionTitle className={classNames(styles.textCenter, styles.smMarginBottom)}>
-              学歴
-            </SectionTitle>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <ErrorMessage
-                name="name"
-                errors={errors}
-                render={({ message }) => <Label color="danger">{message}</Label>}
-              />
-              <InputGroup
-                text="学校名"
-                {...register("name", { required: "学校名は必須です" })}
-                className={styles.smMarginBottom}
-              />
-              <ErrorMessage
-                name="faculty"
-                errors={errors}
-                render={({ message }) => <Label color="danger">{message}</Label>}
-              />
-              <InputGroup
-                text="学部・学科"
-                className={styles.smMarginBottom}
-                {...register("faculty", { required: "学部・学科は必須です" })}
-              />
-
-              <FlexBox direction="column">
-                <BodyTextSmall color="darkGray">入学期間</BodyTextSmall>
-                <FlexBox gap="md">
-                  <InputGroup
-                    type="date"
-                    className={classNames(styles.smMarginBottom, styles.calender)}
-                    {...register("sinceDate", { required: true })}
-                  />
-                  <InputGroup
-                    type="date"
-                    text=""
-                    className={classNames(styles.calender)}
-                    {...register("untilDate", { required: true })}
-                  />
-                </FlexBox>
-              </FlexBox>
-              <FlexBox justify="space-between">
-                <FlexBox gap="xs" justify="end">
-                  <Button color="white" type="button" onClick={cancel} size="small">
-                    キャンセル
-                  </Button>
-                  <Button color="primary" type="submit" size="small">
-                    作成
-                  </Button>
-                </FlexBox>
-              </FlexBox>
-            </form>
-          </div>
-        )}
+            </FlexBox>
+          </form>
+        </div>
       </Modal>
     </>
   );

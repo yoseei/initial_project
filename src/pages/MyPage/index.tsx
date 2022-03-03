@@ -1,4 +1,4 @@
-import React, { useEffect, useState, VFC } from "react";
+import React, { useContext, useEffect, useState, VFC } from "react";
 import { useCurrentAccount } from "hooks/useCurrentAccount";
 import styles from "./style.module.scss";
 import MyPageTop from "pages/MyPage/MyPageTop";
@@ -13,8 +13,8 @@ import { BodyText, BodyTextLarge, BodyTextSmall, SectionTitle } from "components
 import { Button as AntButton } from "antd";
 import Button from "components/atoms/Button";
 import { SubmitHandler } from "react-hook-form";
-import { Account } from "data/account";
 import AcademicHistoryModal from "pages/MyPage/AcademicHistoryModal";
+import { currentAccountContext } from "hooks/useCurrentAccount/currentAccountContext";
 
 export type ProfileFormData = {
   lastName: string;
@@ -50,7 +50,7 @@ export type AcademicHistoryData = {
 
 const MyPage: VFC = () => {
   const { account } = useCurrentAccount();
-  const [profileData, setProfileData] = useState<Account | undefined>(account);
+  const { setAccount } = useContext(currentAccountContext);
   const [workHistoryData, setWorkHistoryData] = useState<WorkHistoryData[]>();
   const [academicHistoryData, setAcademicHistoryData] = useState<AcademicHistoryData[]>();
   const [workHistory, setWorkHistory] = useState<WorkHistoryData>();
@@ -86,7 +86,6 @@ const MyPage: VFC = () => {
 
   useEffect(() => {
     if (!account) return;
-    setProfileData(account);
     fetchWorkHistory();
     fetchAcademicHistory();
   }, [account?.id]);
@@ -280,7 +279,7 @@ const MyPage: VFC = () => {
           <MyPageTop
             isModal={isModal}
             setIsModal={setIsModal}
-            profileData={profileData}
+            profileData={account}
             signOut={signOut}
           />
           <div className={styles.lgMarginTop}>
@@ -316,8 +315,8 @@ const MyPage: VFC = () => {
           <ProfileModal
             setIsModal={setIsModal}
             isModal={isModal}
-            setProfileData={setProfileData}
-            profileData={profileData}
+            setProfileData={setAccount}
+            profileData={account}
           />
         </>
       ) : (
